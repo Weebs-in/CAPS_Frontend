@@ -13,8 +13,8 @@ export class Login extends Component {
                 <div className="brand-logo">
                   <img src={require("../../assets/images/logo.svg")} alt="logo" />
                 </div>
-                <h4>Hello! let's get started</h4>
-                <h6 className="font-weight-light">Sign in to continue.</h6>
+                <h4>Lecturer Login</h4>
+                <h6 className="font-weight-light">Please sign in to continue.</h6>
                 <Form className="pt-3">
                   <Form.Group className="d-flex search-field">
                     <Form.Control type="email" placeholder="Username" size="lg" className="h-auto" />
