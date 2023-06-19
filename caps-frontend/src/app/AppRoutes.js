@@ -20,9 +20,9 @@ const ChartJs = lazy(() => import('./charts/ChartJs'));
 const Error404 = lazy(() => import('./error-pages/Error404'));
 const Error500 = lazy(() => import('./error-pages/Error500'));
 
-const Login = lazy(() => import('./user-pages/Login'));
-
-
+const LoginAdmin = lazy(() => import('./user-admin/LoginAdmin'));
+const LoginLecturer = lazy(() => import('./user-lecturer/LoginLecturer'));
+const LoginStudent = lazy(() => import('./user-student/LoginStudent'));
 
 class AppRoutes extends Component {
   render () {
