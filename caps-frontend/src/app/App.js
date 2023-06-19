@@ -32,7 +32,8 @@ class App extends Component {
   }
 
   render() {
-    const navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : null;
+    const { userType } = this.state
+    const navbarComponent = !this.state.isFullPageLayout ? <Navbar userType={userType}/> : null;
     const sidebarComponent = !this.state.isFullPageLayout ? <Sidebar /> : null;
     const footerComponent = !this.state.isFullPageLayout ? <Footer /> : null;
 
@@ -57,9 +58,26 @@ class App extends Component {
       this.onRouteChanged();
     }
   }
-
+//determine user-type based on route and update state accordingly
   onRouteChanged() {
     console.log('ROUTE CHANGED');
+    const { router } = this.props;
+    // router.location must return /admin, /lecturer, /student
+    const { pathname } = router.location;
+    let userType = '';
+
+    if (pathname === '/admin') {
+      userType = 'admin';
+    } else if (pathname === '/lecturer') {
+      userType = 'lecturer';
+    } else if (pathname === '/student') {
+      userType = 'student';
+    } else {
+      // Default interface before login
+      userType = 'default';
+    }
+
+    this.setState({ userType });
     //const { i18n } = this.props;
     //const body = document.querySelector('body');
 
@@ -74,6 +92,7 @@ class App extends Component {
 
     window.scrollTo(0, 0);
 
+    // this needs to be changed
     const fullPageLayoutRoutes = [
       '/user-pages/login-1',
       '/user-pages/login-2',

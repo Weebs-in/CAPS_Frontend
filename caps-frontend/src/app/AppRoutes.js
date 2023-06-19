@@ -21,7 +21,7 @@ const Error404 = lazy(() => import('./error-pages/Error404'));
 const Error500 = lazy(() => import('./error-pages/Error500'));
 
 const Login = lazy(() => import('./user-pages/Login'));
-const Register1 = lazy(() => import('./user-pages/Register'));
+
 
 
 class AppRoutes extends Component {
@@ -29,7 +29,7 @@ class AppRoutes extends Component {
     return (
       <Suspense fallback={<Spinner/>}>
         <Routes>
-          <Route exact path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="/basic-ui/buttons" element={<Buttons />} />
           <Route path="/basic-ui/dropdowns" element={<Dropdowns />} />
@@ -44,8 +44,9 @@ class AppRoutes extends Component {
           <Route path="/charts/chart-js" element={<ChartJs />} />
 
 
-          <Route path="/user-pages/login-1" element={<Login />} />
-          <Route path="/user-pages/register-1" element={<Register1 />} />
+          <Route path="/user-admin/login-admin" element={<LoginAdmin />} />
+          <Route path="/user-lecturer/login-lecturer" element={<LoginLecturer />} />
+          <Route path="/user-student/login-student" element={<LoginStudent />} />
 
           <Route path="/error-pages/error-404" element={<Error404 />} />
           <Route path="/error-pages/error-500" element={<Error500 />} />
