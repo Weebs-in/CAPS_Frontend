@@ -24,25 +24,25 @@ const _navhome = [
         component: CNavGroup,
         name: 'About',
         to: '/base',
-        icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+        icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
         items: [
             {
                 component: CNavItem,
                 name: 'What\'s New',
-                to: '/admin/createcourse',
+                to: '/home/whatsnew',
             },
             {
                 component: CNavItem,
                 name: 'Our Faculties',
-                to: '/admin/createcourse',
+                to: '/home/ourfaculties',
             },
         ]
     },
     {
         component: CNavItem,
         name: 'All Courses',
-        to: '/dashboard',
-        icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+        to: '/home/allcourses',
+        icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
     },
 ]
 
