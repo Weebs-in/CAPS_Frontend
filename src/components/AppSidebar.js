@@ -14,7 +14,7 @@ import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
-import navigation from '../_navadmin'
+import navigation from '../_navhome'
 import navAdmin from '../_navadmin'
 import navLect from '../_navlecturer'
 import navStu from '../_navstudent'

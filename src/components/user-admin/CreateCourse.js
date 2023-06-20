@@ -1,6 +1,20 @@
 import { useRef } from "react";
 import axios from "axios";
 
+import {
+    CButton,
+    CCard,
+    CCardBody,
+    CCardGroup,
+    CCol,
+    CContainer,
+    CForm,
+    CFormInput,
+    CInputGroup,
+    CInputGroupText,
+    CRow,
+} from '@coreui/react'
+
 export default function CreateCourse() {
     const codeElement = useRef(null);
     const nameElement = useRef(null);
@@ -28,7 +42,7 @@ export default function CreateCourse() {
     }
     return (
         <div>
-            <h4>Create a new Course</h4>
+            <h4>Add Course</h4>
             <form>
                 <label htmlFor='code'>Code:</label><br/>
                 <input type='text' name='code' ref={codeElement}/><br/>
@@ -36,7 +50,7 @@ export default function CreateCourse() {
                 <input type='text' name='name' ref={nameElement}/><br/>
                 <label htmlFor='description'>Description:</label><br/>
                 <input type='text' name='description' ref={descriptionElement}/><br/>
-                <button onClick={handleCreateClick}>Create</button>
+                <CButton color="primary" className="px-4" onClick={handleCreateClick}>Create</CButton>
             </form>
         </div>
     ) }
