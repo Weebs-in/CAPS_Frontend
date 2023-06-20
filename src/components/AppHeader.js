@@ -42,7 +42,9 @@ const AppHeader = ({userType}) => {
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
-          <AppHeaderDropdownUser />
+          {!userType ? (
+              <AppHeaderDropdown />
+          ) : <AppHeaderDropdownUser />}
         </CHeaderNav>
       </CContainer>
       <CHeaderDivider />
