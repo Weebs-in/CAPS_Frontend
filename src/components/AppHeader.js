@@ -16,6 +16,7 @@ import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
+import { AppHeaderDropdownUser } from './header/index'
 import { logo } from 'src/assets/brand/logo'
 
 // need to accept name of user for display
@@ -41,7 +42,7 @@ const AppHeader = ({userType}) => {
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
-          <AppHeaderDropdown />
+          <AppHeaderDropdownUser />
         </CHeaderNav>
       </CContainer>
       <CHeaderDivider />
