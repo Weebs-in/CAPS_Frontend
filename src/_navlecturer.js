@@ -28,19 +28,14 @@ const _navlecturer = [
     items: [
       {
         component: CNavItem,
-        name: 'View Courses Taught',
-        to: '/courses/createcourse',
+        name: 'View My Courses',
+        to: '/lecturer/courses',
       },
       {
         component: CNavItem,
-        name: 'Course Enrollment',
-        to: '/courses/createcourse',
+        name: 'Course Enrolment',
+        to: '/lecturer/enrolment',
       },
-      {
-        component: CNavItem,
-        name: 'Past Courses',
-        to: '/courses/createcourse',
-      }
     ]
   },
   {
@@ -52,12 +47,12 @@ const _navlecturer = [
       {
         component: CNavItem,
         name: 'Grade Course',
-        to: '/buttons/buttons',
+        to: '/lecturer/gradecourse',
       },
       {
         component: CNavItem,
-        name: 'View Student',
-        to: '/buttons/button-groups',
+        name: 'Student Performance',
+        to: '/lecturer/student',
       },
     ],
   },

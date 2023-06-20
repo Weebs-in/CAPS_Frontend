@@ -29,17 +29,17 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Course Records',
-        to: '/courses/createcourse',
+        to: '/admin/courserec',
       },
       {
         component: CNavItem,
         name: 'Add Courses',
-        to: '/courses/createcourse',
+        to: '/admin/addcourse',
       },
       {
         component: CNavItem,
-        name: 'Enrollment',
-        to: '/courses/createcourse',
+        name: 'Enrolment',
+        to: '/admin/course-enrolment',
       }
     ]
   },
@@ -52,12 +52,12 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Lecturer Records',
-        to: '/buttons/buttons',
+        to: '/admin/lecturerrecords',
       },
       {
         component: CNavItem,
         name: 'Add Lecturer',
-        to: '/buttons/button-groups',
+        to: '/admin/addlecturer',
       },
     ],
   },
@@ -69,12 +69,12 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Add Student',
-        to: '/forms/form-control',
+        to: '/admin/addstudent',
       },
       {
         component: CNavItem,
         name: 'Student Records',
-        to: '/forms/select',
+        to: '/admin/studentrecords',
       },
     ],
   },

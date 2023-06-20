@@ -1,17 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDescription,
-  cilDrop,
   cilNotes,
-  cilPencil,
-  cilPuzzle,
-  cilSpeedometer,
-  cilStar,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -28,18 +18,18 @@ const _navstudent = [
     items: [
       {
         component: CNavItem,
-        name: 'Add Course',
-        to: '/admin/createcourse',
+        name: 'Enrol Course',
+        to: '/student/enrol',
       },
       {
         component: CNavItem,
         name: 'Schedule',
-        to: '/admin/createcourse',
+        to: '/student/viewcourse',
       },
       {
         component: CNavItem,
         name: 'My Courses',
-        to: '/admin/createcourse',
+        to: '/student/courselist',
       },
     ]
   },
@@ -52,12 +42,12 @@ const _navstudent = [
       {
         component: CNavItem,
         name: 'Course History',
-        to: '/buttons/buttons',
+        to: '/student/history',
       },
       {
         component: CNavItem,
         name: 'Grades',
-        to: '/buttons/button-groups',
+        to: '/student/grades',
       },
     ],
   },
