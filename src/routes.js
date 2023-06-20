@@ -50,6 +50,10 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
+const LoginAdmin = React.lazy(() => import('./components/user-admin/LoginAdmin'))
+const LoginLecturer = React.lazy(() => import('./components/user-lecturer/LoginLecturer'))
+const LoginStudent = React.lazy(() => import('./components/user-student/LoginStudent'))
+
 const CreateCourse = React.lazy(() => import('./components/user-admin/CreateCourse'))
 
 const routes = [
@@ -98,7 +102,10 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/courses', name: 'Courses', element: CreateCourse, exact: true },
-  { path: '/courses/createcourse', name: 'Add Course', element: CreateCourse }
+  { path: '/courses/createcourse', name: 'Add Course', element: CreateCourse },
+  { path: '/login/admin', name: 'Adminstrator Login', element: LoginAdmin},
+  { path: '/login/lecturer', name: 'Lecturer Login', element: LoginLecturer},
+  { path: '/login/student', name: 'Student Login', element: LoginStudent},
 ]
 
 export default routes
