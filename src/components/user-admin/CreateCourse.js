@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import axios form "axios";
+import axios from "axios";
 
 export default function CreateCourse() {
     const codeElement = useRef(null);
