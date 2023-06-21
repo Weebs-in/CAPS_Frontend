@@ -33,11 +33,6 @@ const _navadmin = [
       },
       {
         component: CNavItem,
-        name: 'Add Courses',
-        to: '/admin/addcourse',
-      },
-      {
-        component: CNavItem,
         name: 'Enrolment',
         to: '/admin/course-enrolment',
       }
@@ -54,11 +49,6 @@ const _navadmin = [
         name: 'Lecturer Records',
         to: '/admin/lecturerrecords',
       },
-      {
-        component: CNavItem,
-        name: 'Add Lecturer',
-        to: '/admin/addlecturer',
-      },
     ],
   },
   {
@@ -66,11 +56,6 @@ const _navadmin = [
     name: 'Students',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: 'Add Student',
-        to: '/admin/addstudent',
-      },
       {
         component: CNavItem,
         name: 'Student Records',

@@ -1,4 +1,17 @@
 import React from 'react';
+import {
+    CButton,
+    CCard,
+    CCardBody,
+    CCardGroup,
+    CCol,
+    CContainer,
+    CForm,
+    CFormInput,
+    CInputGroup,
+    CInputGroupText,
+    CRow,
+} from '@coreui/react'
 
 const MyComponent = () => {
     return (
