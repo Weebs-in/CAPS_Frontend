@@ -16,9 +16,28 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
-const Login = () => {
+function LoginAdmin() {
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [loginStatus, setLoginStatus] = useState("");
+  //
+  // const login = (e) => {
+  //   e.preventDefault();
+  //   Axios.post("http://localhost:8080/login", {
+  //     username: username,
+  //     password: password,
+  //   }).then((response) => {
+  //     if(response.data.message){
+  //       setLoginStatus(response.data.message);
+  //     }
+  //     else{
+  //       currently displaying email if login successful, change to something else
+  //       setLoginStatus(response.data.[0].email)
+  //     }
+  //   })
+  // }
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="bg-light min-vh-70 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>
@@ -26,12 +45,13 @@ const Login = () => {
               <CCard className="p-4" style={{ width: '30%' }}>
                 <CCardBody>
                   <CForm>
-                    <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <h1>Administrators</h1>
+                    <p className="text-medium-emphasis">Please ensure you are using the correct login</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
+                      {/*add  onChange={(e) => {setUsername(e.target.value)}} when input login function*/}
                       <CFormInput placeholder="Username" autoComplete="username" />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -42,10 +62,12 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        // onChange={(e) => {setPassword(e.target.value)}}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
+                        {/*add onClick={login} when input login function*/}
                         <CButton color="primary" className="px-4">
                           Login
                         </CButton>
@@ -59,22 +81,6 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              {/*<CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>*/}
-              {/*  <CCardBody className="text-center">*/}
-              {/*    <div>*/}
-              {/*      <h2>Sign up</h2>*/}
-              {/*      <p>*/}
-              {/*        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod*/}
-              {/*        tempor incididunt ut labore et dolore magna aliqua.*/}
-              {/*      </p>*/}
-              {/*      <Link to="/register">*/}
-              {/*        <CButton color="primary" className="mt-3" active tabIndex={-1}>*/}
-              {/*          Register Now!*/}
-              {/*        </CButton>*/}
-              {/*      </Link>*/}
-              {/*    </div>*/}
-              {/*  </CCardBody>*/}
-              {/*</CCard>*/}
             </CCardGroup>
           </CCol>
         </CRow>
@@ -83,4 +89,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default LoginAdmin

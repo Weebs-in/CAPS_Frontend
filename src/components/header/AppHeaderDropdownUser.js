@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom';
 import {
   CAvatar,
   CBadge,
@@ -12,6 +11,13 @@ import {
   CNavItem,
 } from '@coreui/react'
 import {
+  cilBell,
+  cilCommentSquare,
+  cilEnvelopeOpen,
+  cilFile,
+  cilLockLocked,
+  cilSettings,
+  cilTask,
   cilUser,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -22,21 +28,22 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CNavItem>Log In</CNavItem>
+        <CNavItem>Username</CNavItem>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">Login Type</CDropdownHeader>
-        <CDropdownItem to="/login/admin" component={NavLink}>
+        <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
+        <CDropdownItem href="#">
           <CIcon icon={cilUser} className="me-2" />
-          Administrator
+          Email
         </CDropdownItem>
-        <CDropdownItem to="/login/lecturer" component={NavLink}>
-          <CIcon icon={cilUser} className="me-2" />
-          Lecturer
+        <CDropdownItem href="#">
+          <CIcon icon={cilSettings} className="me-2" />
+          Password
         </CDropdownItem>
-        <CDropdownItem to="/login/student" component={NavLink}>
-          <CIcon icon={cilUser} className="me-2" />
-          Student
+        <CDropdownDivider />
+        <CDropdownItem href="#">
+          <CIcon icon={cilLockLocked} className="me-2" />
+          Logout
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
