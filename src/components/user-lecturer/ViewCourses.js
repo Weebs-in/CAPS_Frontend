@@ -15,7 +15,6 @@ import {
     CTable,
     CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 
 const ViewCourses = () => {
     const [items, setItems] = useState([]); // State to hold the fetched items
@@ -37,8 +36,9 @@ const ViewCourses = () => {
     //     };
 
     // this method assumes i have to derive enrolment on behalf of backened
+    // need to confirm if data that is ported over is in camel case or _
     useEffect(() => {
-        axios.get('/api/courses') //change to correct api address
+        axios.get('/api/course') //change to correct api address
             .then(response => {
                 const derivedItems = response.data.map(course => ({
                     ...course,
