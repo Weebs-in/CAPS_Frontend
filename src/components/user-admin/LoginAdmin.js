@@ -42,7 +42,7 @@ function LoginAdmin() {
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
-              <CCard className="p-4" style={{ width: '30%' }}>
+              <CCard className="p-4" style={{ minWidth: '280px', maxWidth: '400px' }}>
                 <CCardBody>
                   <CForm>
                     <h1>Administrators</h1>
