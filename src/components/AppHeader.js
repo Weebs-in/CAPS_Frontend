@@ -34,7 +34,7 @@ const AppHeader = ({userType}) => {
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
         <CHeaderBrand className="mx-auto d-md-none" to="/">
-          <p className="logo rainbow-text">Team8 CAPS</p>
+          <p className="logo gradient-text">Team8 CAPS</p>
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>

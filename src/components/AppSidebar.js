@@ -37,7 +37,7 @@ const AppSidebar = ({ userType }) => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <p className="logo rainbow-text">Team8</p>
+        <p className="logo gradient-text">Team8</p>
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
