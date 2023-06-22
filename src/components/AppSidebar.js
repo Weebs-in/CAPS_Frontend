@@ -17,7 +17,8 @@ import 'simplebar/dist/simplebar.min.css'
 import '../css/logo.css';
 
 // sidebar nav config
-import navigation from '../_navhome'
+import navigation from '../_nav'
+import navHome from '../_navhome'
 import navAdmin from '../_navadmin'
 import navLect from '../_navlecturer'
 import navStu from '../_navstudent'

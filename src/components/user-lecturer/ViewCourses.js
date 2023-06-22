@@ -37,23 +37,23 @@ const ViewCourses = () => {
 
     // this method assumes i have to derive enrolment on behalf of backened
     // need to confirm if data that is ported over is in camel case or _
-    useEffect(() => {
-        axios.get('/api/course') //change to correct api address
-            .then(response => {
-                const derivedItems = response.data.map(course => ({
-                    ...course,
-                    enrolment: course.courseCapacity + course.courseVacancy,
-                }));
-                setItems(derivedItems);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
-
-        // Call the fetchItems function
-        fetchItems();
-    }, []);
+    // useEffect(() => {
+    //     axios.get('/api/course') //change to correct api address
+    //         .then(response => {
+    //             const derivedItems = response.data.map(course => ({
+    //                 ...course,
+    //                 enrolment: course.courseCapacity + course.courseVacancy,
+    //             }));
+    //             setItems(derivedItems);
+    //         })
+    //         .catch(error => {
+    //             console.error(error);
+    //         });
+    // }, []);
+    //
+    //     // Call the fetchItems function
+    //     fetchItems();
+    // }, []);
 
     const columns = [
         {

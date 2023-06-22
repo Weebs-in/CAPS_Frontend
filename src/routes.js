@@ -79,6 +79,7 @@ const StudentGrades = React.lazy(() => import('./components/user-student/Student
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
+  { path: '/dashboard', exact:true, element: Dashboard, name: 'Dashboard'},
   // example, can remove
   { path: '/forms', name: 'Forms', element: FormControl, exact: true },
   { path: '/admin/addcourse', name: 'Add Course', element: CreateCourse },
