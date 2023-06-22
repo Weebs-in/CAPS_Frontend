@@ -31,7 +31,7 @@ export default function CreateCourse() {
             description: descriptionElement.current.value
         };
         axios
-            .post("http://localhost:8080/api/courses",data)
+            .post("/api/courses",data)
             .then(response => {
                 console.log("Success!");
                 console.log(response.data)
