@@ -10,8 +10,11 @@ const config = {
 
     // urls
     basicURL: 'http://localhost:3000', // this field is probably not going to be used
+    // faculty
     getAllFaculties: '/faculty/getAllFaculties',
-    createFaculty: '/faculty/saveFaculty'
+    createFaculty: '/faculty/saveFaculty',
+    updateFaculty: '/faculty/updateFaculty',
+    deleteFaculty: '/faculty/deleteFacultyById'
 };
 
 export default config;

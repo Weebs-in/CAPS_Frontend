@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {
+    CAlert,
     CButton,
     CCard,
     CCardBody,
@@ -16,10 +17,17 @@ import {
 import config from 'src/config.js';
 
 const Tables = () => {
-
+    // variables
     const [faculties, setFaculties] = useState([]);
+    const [selectedFacultyId, setSelectedFacultyId] = useState(null);
+    const [name, setName] = useState('');
+    // modal visibility
     const [visible, setVisible] = useState(false);
+    const [visible_upd, setVisibleUpd] = useState(false);
+    const [visible_Del, setVisibleDel] = useState(false);
+    // form
     const formRef = useRef(null);
+    // toast
     const [toast, addToast] = useState(0)
     const toaster = useRef()
 
@@ -94,6 +102,96 @@ const Tables = () => {
         }
     };
 
+    const handleFacultySelection = (facultyId) => {
+        console.log("selected id: " + facultyId)
+        setSelectedFacultyId(facultyId);
+        const selectedFaculty = faculties.find((faculty) => faculty.facultyId === facultyId);
+        setName(selectedFaculty.facultyName);
+    };
+
+    const handleUpdate = async (event) => {
+        event.preventDefault();
+        try {
+            const params = new URLSearchParams();
+            params.append('facultyId', selectedFacultyId);
+            params.append('newFacultyName', name.trim());
+            const response = await fetch(config.updateFaculty + `?${params.toString()}`, {
+                method: 'PUT'
+            });
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.code === config.REQUEST_SUCCESS) {
+                    console.log('Faculty updated');
+                    setVisibleUpd(false);
+                    addToast(resultToast({
+                        toastColor: config.TOAST_SUCCESS_COLOR,
+                        toastMessage: config.TOAST_SUCCESS_MSG
+                    }));
+                    await fetchFaculties();
+                } else {
+                    console.error('Failed to update faculty: ', responseData.msg);
+                    addToast(resultToast({
+                        toastColor: config.TOAST_FAILED_COLOR,
+                        toastMessage: config.TOAST_FAILED_MSG
+                    }));
+                }
+            } else {
+                console.error('Failed to submit form data, request failed');
+                addToast(resultToast({
+                    toastColor: config.TOAST_FAILED_COLOR,
+                    toastMessage: config.TOAST_FAILED_MSG
+                }));
+            }
+        } catch (error) {
+            console.error('Error while submitting form data:', error);
+            addToast(resultToast({
+                toastColor: config.TOAST_FAILED_COLOR,
+                toastMessage: config.TOAST_FAILED_MSG
+            }));
+        }
+    };
+
+    const handleDelete = async (event) => {
+        event.preventDefault();
+        try {
+            const params = new URLSearchParams();
+            params.append('facultyId', selectedFacultyId);
+            const response = await fetch(config.deleteFaculty + `?${params.toString()}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.code === config.REQUEST_SUCCESS) {
+                    console.log('Faculty deleted');
+                    setVisibleDel(false);
+                    addToast(resultToast({
+                        toastColor: config.TOAST_SUCCESS_COLOR,
+                        toastMessage: config.TOAST_SUCCESS_MSG
+                    }));
+                    await fetchFaculties();
+                } else {
+                    console.error('Failed to delete faculty: ', responseData.msg);
+                    addToast(resultToast({
+                        toastColor: config.TOAST_FAILED_COLOR,
+                        toastMessage: config.TOAST_FAILED_MSG
+                    }));
+                }
+            } else {
+                console.error('Failed to submit form data, request failed');
+                addToast(resultToast({
+                    toastColor: config.TOAST_FAILED_COLOR,
+                    toastMessage: config.TOAST_FAILED_MSG
+                }));
+            }
+        } catch (error) {
+            console.error('Error while submitting form data:', error);
+            addToast(resultToast({
+                toastColor: config.TOAST_FAILED_COLOR,
+                toastMessage: config.TOAST_FAILED_MSG
+            }));
+        }
+    };
+
     return (
         <CRow>
             <CCol xs={12}>
@@ -108,8 +206,8 @@ const Tables = () => {
                         <CButton color="success"
                                  style={{marginRight: 10 + 'px', marginBottom: 20 + 'px'}}
                                  onClick={() => setVisible(!visible)}>Create</CButton>
-                        <CButton color="danger" style={{marginRight: 10 + 'px', marginBottom: 20 + 'px'}}>Batch
-                            Delete</CButton>
+                        {/*<CButton color="danger" style={{marginRight: 10 + 'px', marginBottom: 20 + 'px'}}>Batch*/}
+                        {/*    Delete (under development)</CButton>*/}
                         <CTable hover>
                             <CTableHead>
                                 <CTableRow>
@@ -124,8 +222,18 @@ const Tables = () => {
                                         <CTableHeaderCell scope="row">{item.facultyId}</CTableHeaderCell>
                                         <CTableDataCell>{item.facultyName}</CTableDataCell>
                                         <CTableDataCell>
-                                            <CButton color="info" style={{marginRight: 10 + 'px'}}>Update</CButton>
-                                            <CButton color="danger" style={{marginRight: 10 + 'px'}}>Delete</CButton>
+                                            <CButton color="info"
+                                                     style={{marginRight: 10 + 'px'}}
+                                                     onClick={() => {
+                                                         setVisibleUpd(!visible_upd);
+                                                         handleFacultySelection(item.facultyId)
+                                                     }}>Update</CButton>
+                                            <CButton color="danger"
+                                                     style={{marginRight: 10 + 'px'}}
+                                                     onClick={() => {
+                                                         setVisibleDel(!visible_Del);
+                                                         handleFacultySelection(item.facultyId)
+                                                     }}>Delete</CButton>
                                         </CTableDataCell>
                                     </CTableRow>
                                 ))}
@@ -151,7 +259,64 @@ const Tables = () => {
                         <CButton color="secondary" onClick={() => setVisible(false)}>
                             Close
                         </CButton>
-                        <CButton color="primary" onClick={handleSubmit}>Save</CButton>
+                        <CButton color="success" onClick={handleSubmit}>Save</CButton>
+                    </CModalFooter>
+                </CModal>
+                <CModal alignment="center" size="lg" visible={visible_upd} onClose={() => setVisibleUpd(false)}>
+                    <CModalHeader>
+                        <CModalTitle>Update a faculty</CModalTitle>
+                    </CModalHeader>
+                    <CModalBody>
+                        <CForm>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty Name</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={name}
+                                                onChange={(event) => setName(event.target.value)}/>
+                                </CCol>
+                            </CRow>
+                        </CForm>
+                    </CModalBody>
+                    <CModalFooter>
+                        <CButton color="secondary" onClick={() => setVisibleUpd(false)}>
+                            Close
+                        </CButton>
+                        <CButton color="info" onClick={handleUpdate}>Update</CButton>
+                    </CModalFooter>
+                </CModal>
+                <CModal alignment="center" size="lg" visible={visible_Del} onClose={() => setVisibleDel(false)}>
+                    <CModalHeader>
+                        <CModalTitle>Delete a faculty</CModalTitle>
+                    </CModalHeader>
+                    <CModalBody>
+                        <CAlert color="danger">
+                            WARNING: This is an irreversible and destructive operation
+                        </CAlert>
+                        <CForm>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty Id</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={selectedFacultyId}
+                                                disabled={true}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty Name</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={name}
+                                                disabled={true}/>
+                                </CCol>
+                            </CRow>
+                        </CForm>
+                    </CModalBody>
+                    <CModalFooter>
+                        <CButton color="secondary" onClick={() => setVisibleDel(false)}>
+                            Close
+                        </CButton>
+                        <CButton color="danger" onClick={handleDelete}>Delete</CButton>
                     </CModalFooter>
                 </CModal>
                 <CToaster ref={toaster} push={toast} placement="top-end"/>
