@@ -29,7 +29,7 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Course Records',
-        to: '/admin/courserec',
+        to: '/admin/course-records',
       },
       {
         component: CNavItem,
@@ -47,7 +47,7 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Lecturer Records',
-        to: '/admin/lecturerrecords',
+        to: '/admin/lecturer-records',
       },
     ],
   },
@@ -59,7 +59,7 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Student Records',
-        to: '/admin/studentrecords',
+        to: '/admin/student-records',
       },
     ],
   },
@@ -71,7 +71,7 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Faculty Records',
-        to: '/admin/facultyrecords',
+        to: '/admin/faculty-records',
       },
     ],
   },

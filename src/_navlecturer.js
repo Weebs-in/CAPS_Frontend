@@ -47,7 +47,7 @@ const _navlecturer = [
       {
         component: CNavItem,
         name: 'Grade Course',
-        to: '/lecturer/gradecourse',
+        to: '/lecturer/grade-course',
       },
       {
         component: CNavItem,

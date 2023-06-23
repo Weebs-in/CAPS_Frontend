@@ -24,12 +24,12 @@ const _navstudent = [
       {
         component: CNavItem,
         name: 'Schedule',
-        to: '/student/viewcourse',
+        to: '/student/view-course',
       },
       {
         component: CNavItem,
         name: 'My Courses',
-        to: '/student/courselist',
+        to: '/student/course-list',
       },
     ]
   },
