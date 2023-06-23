@@ -33,7 +33,7 @@ const config = {
     // student
     getAllStudents: '/student/getAllStudents',
     getStudentById: '/student/getStudentById',
-    getStudentsByFacultyId: '/student/getStudentById',
+    getStudentsByFacultyId: '/student/getStudentByFacultyId',
     createStudent: '/student/saveStudent',
     updateStudent: '/student/updateStudent',
     deleteStudent: '/student/deleteStudentById',
