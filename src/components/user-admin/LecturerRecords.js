@@ -1,4 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 import {
     CAlert,
     CButton,
@@ -6,7 +9,9 @@ import {
     CCardBody,
     CCardHeader,
     CCol, CForm, CFormInput, CFormLabel, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle,
+    CInputGroup, CInputGroupText,
     CRow,
+    CFormSelect,
     CTable,
     CTableBody,
     CTableDataCell,
@@ -18,9 +23,15 @@ import config from 'src/config.js';
 
 const LecturerRecords = () => {
     // variables
+    const [faculties, setFaculties] = useState([]);
     const [lecturers, setLecturers] = useState([]);
     const [selectedLecturerId, setSelectedLecturerId] = useState(null);
-    const [name, setName] = useState('');
+    const [matricNo, setMatricNo] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [firstMidName, setFirstMidName] = useState('');
+    const [gender, setGender] = useState('');
+    const [dateOfBirth, setDob] = useState('');
+    const [lecturerFacultyId, setLecturerFacultyId] = useState('');
     // modal visibility
     const [visible, setVisible] = useState(false);
     const [visible_upd, setVisibleUpd] = useState(false);
@@ -49,6 +60,25 @@ const LecturerRecords = () => {
         });
     };
 
+    useEffect(() => {
+        fetchFaculties();
+    }, []);
+
+    const fetchFaculties = async () => {
+        fetch(config.getAllFaculties, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
+        }).then(response => response.json()).then(data => {
+            const facultiesData = data.data;
+            setFaculties(facultiesData);
+        }).catch(error => {
+            console.error('Error fetching faculty data:', error);
+        });
+    };
+
+
     const resultToast = ({toastColor, toastMessage}) => (
         <CToast autohide={true} color={toastColor}>
             <CToastHeader closeButton>
@@ -65,7 +95,13 @@ const LecturerRecords = () => {
         const formDataObject = Object.fromEntries(formData.entries());
         try {
             const params = new URLSearchParams();
-            params.append('lecturerName', formDataObject["lecturerName"].trim());
+            params.append('matriculationNumber', formDataObject["lecturerMatriculationNumber"].trim());
+            params.append('password', formDataObject["lecturerPassword"].trim());
+            params.append('lastName', formDataObject["lecturerLastName"].trim());
+            params.append('firstMidName', formDataObject["lecturerFirstMidName"].trim());
+            params.append('gender', formDataObject["lecturerGender"].trim());
+            params.append('dateOfBirth', formDataObject["lecturerDob"].trim());
+            params.append('lecturer_faculty_id', formDataObject["lecturerFacultyId"].trim());
             const response = await fetch(config.createLecturer + `?${params.toString()}`, {
                 method: 'POST'
             });
@@ -106,7 +142,12 @@ const LecturerRecords = () => {
         console.log("selected id: " + lecturerId)
         setSelectedLecturerId(lecturerId);
         const selectedLecturer = lecturers.find((lecturer) => lecturer.lecturerId === lecturerId);
-        setName(selectedLecturer.lecturerName);
+        setMatricNo(selectedLecturer.matriculationNumber);
+        setLastName(selectedLecturer.lastName);
+        setFirstMidName(selectedLecturer.firstMidName);
+        setGender(selectedLecturer.gender);
+        setDob(selectedLecturer.dateOfBirth);
+        setFacultyId(selectedLecturer.lecturerFacultyId);
     };
 
     const handleUpdate = async (event) => {
@@ -114,7 +155,12 @@ const LecturerRecords = () => {
         try {
             const params = new URLSearchParams();
             params.append('lecturerId', selectedLecturerId);
-            params.append('newLecturerName', name.trim());
+            params.append('newLecturerMatricNo', matricNo.trim());
+            params.append('newLecturerLastName', lastName.trim());
+            params.append('newLecturerFirstMidName', firstMidName.trim());
+            params.append('newLecturerGender', gender.trim());
+            params.append('newLecturerDob', dob.trim());
+            params.append('newLecturerFacultyId', facultyId.trim());
             const response = await fetch(config.updateLecturer + `?${params.toString()}`, {
                 method: 'PUT'
             });
@@ -155,20 +201,20 @@ const LecturerRecords = () => {
         event.preventDefault();
         try {
             const params = new URLSearchParams();
-            params.append('facultyId', selectedFacultyId);
+            params.append('lecturerId', selectedLecturerId);
             const response = await fetch(config.deleteFaculty + `?${params.toString()}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Faculty deleted');
+                    console.log('Lecturer deleted');
                     setVisibleDel(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
                         toastMessage: config.TOAST_SUCCESS_MSG
                     }));
-                    await fetchFaculties();
+                    await fetchLecturers();
                 } else {
                     console.error('Failed to delete faculty: ', responseData.msg);
                     addToast(resultToast({
@@ -211,8 +257,13 @@ const LecturerRecords = () => {
                         <CTable hover>
                             <CTableHead>
                                 <CTableRow>
-                                    <CTableHeaderCell scope="col">Lecturer Id</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Lecturer Name</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Id</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Staff Id</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Birthdate</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Faculty</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Options</CTableHeaderCell>
                                 </CTableRow>
                             </CTableHead>
@@ -220,7 +271,12 @@ const LecturerRecords = () => {
                                 {lecturers.map(item => (
                                     <CTableRow key={item.lecturerId}>
                                         <CTableHeaderCell scope="row">{item.lecturerId}</CTableHeaderCell>
-                                        <CTableDataCell>{item.lecturerName}</CTableDataCell>
+                                        <CTableDataCell>{item.matriculationNumber}</CTableDataCell>
+                                        <CTableDataCell>{item.lastName}</CTableDataCell>
+                                        <CTableDataCell>{item.firstMidName}</CTableDataCell>
+                                        <CTableDataCell>{item.gender}</CTableDataCell>
+                                        <CTableDataCell>{item.dateOfBirth}</CTableDataCell>
+                                        <CTableDataCell>{item.faculty.facultyName}</CTableDataCell>
                                         <CTableDataCell>
                                             <CButton color="info"
                                                      style={{marginRight: 10 + 'px'}}
@@ -248,9 +304,71 @@ const LecturerRecords = () => {
                     <CModalBody>
                         <CForm ref={formRef}>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Lecturer Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Staff ID</CFormLabel>
                                 <CCol sm={10}>
-                                    <CFormInput type="text" name="lecturerName"/>
+                                    <CFormInput type="text" name="lecturerMatriculationNumber"/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Password</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text" name="lecturerPassword"/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Last Name</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text" name="lecturerLastName"/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">First Name</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text" name="lecturerFirstMidName"/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Gender</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormSelect name="lecturerGender">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </CFormSelect>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Date of Birth</CFormLabel>
+                                <CCol sm={10}>
+                                    <CInputGroup>
+                                        <DatePicker
+                                            selected={dateOfBirth}
+                                            onChange={(date) => {
+                                                console.log("DatePicker onChange event:", date);
+                                                setDob(date);
+                                            }}
+                                            onFocus={(e) => e.stopPropagation()} // Prevent event propagation
+                                            className="form-control"
+                                            name="lecturerDob"
+                                        />
+                                        <CInputGroupText>
+                                            {/* Display the selected date value */}
+                                            {dateOfBirth && dateOfBirth.toLocaleDateString()}
+                                        </CInputGroupText>
+                                    </CInputGroup>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormSelect name="lecturerFacultyId">
+                                        <option value="">Select Faculty</option>
+                                        {faculties.map(faculty => (
+                                            <option key={faculty.facultyId} value={faculty.facultyId}>
+                                                {faculty.facultyName}
+                                            </option>
+                                        ))}
+                                    </CFormSelect>
                                 </CCol>
                             </CRow>
                         </CForm>
@@ -269,11 +387,74 @@ const LecturerRecords = () => {
                     <CModalBody>
                         <CForm>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Lecturer Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Staff ID</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={name}
-                                                onChange={(event) => setName(event.target.value)}/>
+                                                value={matricNo}
+                                                onChange={(event) => setMatricNo(event.target.value)}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Last Name</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={lastName}
+                                                onChange={(event) => setLastName(event.target.value)}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">First Name</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={firstMidName}
+                                                onChange={(event) => setFirstMidName(event.target.value)}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Gender</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormSelect
+                                        name="lecturerGender"
+                                        value={gender}
+                                        onChange={(event) => setGender(event.target.value)}
+                                    >
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </CFormSelect>
+                                </CCol>
+                            </CRow>
+                            <CInputGroup>
+                                <DatePicker
+                                    selected={dateOfBirth}
+                                    onChange={(date) => {
+                                        console.log("DatePicker onChange event:", date);
+                                        setDob(date);
+                                    }}
+                                    onFocus={(e) => e.stopPropagation()} // Prevent event propagation
+                                    className="form-control"
+                                    name="lecturerDob"
+                                />
+                                <CInputGroupText>
+                                    {/* Display the selected date value */}
+                                    {dateOfBirth && dateOfBirth.toLocaleDateString()}
+                                </CInputGroupText>
+                            </CInputGroup>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormSelect
+                                        name="lecturerFacultyId"
+                                        value={lecturerFacultyId}
+                                        onChange={(event) => setLecturerFacultyId(event.target.value)}
+                                    >
+                                        <option value="">Select Faculty</option>
+                                        {faculties.map(faculty => (
+                                            <option key={faculty.facultyId} value={faculty.facultyId}>
+                                                {faculty.facultyName}
+                                            </option>
+                                        ))}
+                                    </CFormSelect>
                                 </CCol>
                             </CRow>
                         </CForm>
@@ -306,7 +487,7 @@ const LecturerRecords = () => {
                                 <CFormLabel className="col-sm-2 col-form-label">Lecturer Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={name}
+                                                value={`${lastName} ${firstMidName}`}
                                                 disabled={true}/>
                                 </CCol>
                             </CRow>
