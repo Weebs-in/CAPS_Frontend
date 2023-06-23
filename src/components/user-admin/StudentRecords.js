@@ -45,7 +45,7 @@ const StudentRecords = () => {
             const studentsData = data.data;
             setStudents(studentsData);
         }).catch(error => {
-            console.error('Error fetching faculty data:', error);
+            console.error('Error fetching student data:', error);
         });
     };
 

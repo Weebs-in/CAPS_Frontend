@@ -17,7 +17,6 @@ const config = {
     createCourse: '/course/saveCourse',
     updateCourse: '/course/updateCourse',
     deleteCourse: '/course/deleteCourseById',
-    saveCourse: '/course/saveCourse',
     // faculty
     getAllFaculties: '/faculty/getAllFaculties',
     getFacultyById: '/faculty/getFacultyById',
@@ -28,18 +27,16 @@ const config = {
     getAllLecturers: '/lecturer/getAllLecturers',
     getLecturerById: '/lecturer/getLecturerById',
     getLecturerByFacultyId: '/lecturer/getLecturerByFacultyId',
-    createLecturer: '/lecturer/createLecturer',
+    createLecturer: '/lecturer/saveLecturer',
     updateLecturer: '/lecturer/updateLecturer',
     deleteLecturer: '/lecturer/deleteLecturerById',
-    saveLecturer: '/lecturer/saveLecturer',
     // student
     getAllStudents: '/student/getAllStudents',
     getStudentById: '/student/getStudentById',
     getStudentsByFacultyId: '/student/getStudentById',
-    createStudent: '/student/createStudent',
+    createStudent: '/student/saveStudent',
     updateStudent: '/student/updateStudent',
     deleteStudent: '/student/deleteStudentById',
-    saveStudent: '/student/saveStudent',
     // course_lecturer
     lecturerEnrollCourse: '/course_lecturer/LecturerEnrollCourse',
     removeLecturerFromCourse: '/course_lecturer/removeLecturerFromCourse',
