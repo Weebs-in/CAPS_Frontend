@@ -16,7 +16,7 @@ import {
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-const AppHeaderLogin = () => {
+const AppHeaderLogout = () => {
     return (
         <CDropdown variant="nav-item">
             <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -41,4 +41,4 @@ const AppHeaderLogin = () => {
     )
 }
 
-export default AppHeaderLogin
+export default AppHeaderLogout
