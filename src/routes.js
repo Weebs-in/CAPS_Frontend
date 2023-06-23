@@ -54,6 +54,7 @@ const WhatsNew = React.lazy(() => import('./components/home/whatsnew'))
 const OurFaculties = React.lazy(() => import('./components/home/ourfaculties'))
 const AllCourses = React.lazy(() => import('./components/home/allcourses'))
 
+const Login = React.lazy(() => import('./components/home/Login'))
 const LoginAdmin = React.lazy(() => import('./components/user-admin/LoginAdmin'))
 const LoginLecturer = React.lazy(() => import('./components/user-lecturer/LoginLecturer'))
 const LoginStudent = React.lazy(() => import('./components/user-student/LoginStudent'))
@@ -98,6 +99,7 @@ const routes = [
   { path: '/student/history', name: 'Course History', element: CourseHistory},
   { path: '/student/viewcourse', name: 'Schedule', element: ScheduleStu},
   { path: '/student/grades', name: 'Grades', element: StudentGrades},
+  { path: '/login/', exact:true, name: 'Log In', element: Login },
   { path: '/login/admin', name: 'Adminstrator Login', element: LoginAdmin},
   { path: '/login/lecturer', name: 'Lecturer Login', element: LoginLecturer},
   { path: '/login/student', name: 'Student Login', element: LoginStudent},
