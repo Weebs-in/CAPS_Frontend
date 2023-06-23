@@ -60,7 +60,7 @@ const LoginLecturer = React.lazy(() => import('./components/user-lecturer/LoginL
 const LoginStudent = React.lazy(() => import('./components/user-student/LoginStudent'))
 
 const CourseEnrolment = React.lazy(() => import('./components/user-admin/CourseEnrolment'))
-const CourseRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
+const CourseRecords = React.lazy(() => import('./components/user-admin/CourseRecords'))
 const LectureRecords = React.lazy(() => import('./components/user-admin/LecturerRecords'))
 const StudentRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
 const FacultyRecords = React.lazy(() => import('./components/user-admin/FacultyRecords'))
