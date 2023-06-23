@@ -17,6 +17,8 @@ import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { AppHeaderDropdownUser } from './header/index'
+import { AppHeaderLogout } from './header/index'
+import { AppHeaderLogin } from './header/index'
 import '../css/logo.css';
 
 // need to accept name of user for display
@@ -43,8 +45,8 @@ const AppHeader = ({userType}) => {
         </CHeaderNav>
         <CHeaderNav className="ms-3">
           {!userType ? (
-              <AppHeaderDropdown />
-          ) : <AppHeaderDropdownUser />}
+              <AppHeaderLogin />
+          ) : <AppHeaderLogout />}
         </CHeaderNav>
       </CContainer>
       <CHeaderDivider />
