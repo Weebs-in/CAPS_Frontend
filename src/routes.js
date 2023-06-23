@@ -59,9 +59,6 @@ const LoginAdmin = React.lazy(() => import('./components/user-admin/LoginAdmin')
 const LoginLecturer = React.lazy(() => import('./components/user-lecturer/LoginLecturer'))
 const LoginStudent = React.lazy(() => import('./components/user-student/LoginStudent'))
 
-const CreateCourse = React.lazy(() => import('./components/user-admin/CreateCourse'))
-const CreateLecturer = React.lazy(() => import('./components/user-admin/CreateLecturer'))
-const CreateStudent = React.lazy(() => import('./components/user-admin/CreateStudent'))
 const CourseEnrolment = React.lazy(() => import('./components/user-admin/CourseEnrolment'))
 const CourseRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
 const LectureRecords = React.lazy(() => import('./components/user-admin/LecturerRecords'))
@@ -83,9 +80,6 @@ const routes = [
   { path: '/dashboard', exact:true, element: Dashboard, name: 'Dashboard'},
   // example, can remove
   { path: '/forms', name: 'Forms', element: FormControl, exact: true },
-  { path: '/admin/add-course', name: 'Add Course', element: CreateCourse },
-  { path: '/admin/add-lecturer', name: 'Add Lecturer', element: CreateLecturer},
-  { path: '/admin/add-student', name: 'Add Student', element: CreateStudent},
   { path: '/admin/course-enrolment', name: 'Course Enrolment', element: CourseEnrolment},
   { path: '/admin/lecturer-records', name: 'Lecturer Records', element: LectureRecords},
   { path: '/admin/student-records', name: 'Student Records', element: StudentRecords},
