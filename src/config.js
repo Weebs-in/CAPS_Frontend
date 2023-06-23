@@ -26,10 +26,10 @@ const config = {
     updateLecturer: '/lecturer/updateLecturer',
     deleteLecturer: '/lecturer/deleteLecturerById',
     // student
-    getAllStudents: '/lecturer/getAllStudents',
-    createStudent: '/lecturer/createStudent',
-    updateStudent: '/lecturer/updateStudent',
-    deleteStudent: '/lecturer/deleteStudentById',
+    getAllStudents: '/student/getAllStudents',
+    createStudent: '/student/createStudent',
+    updateStudent: '/student/updateStudent',
+    deleteStudent: '/student/deleteStudentById',
     // course_lecturer
     lecturerEnrollCourse: '/course_lecturer/LecturerEnrollCourse',
     removeLecturerFromCourse: '/course_lecturer/removeLecturerFromCourse',
