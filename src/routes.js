@@ -66,7 +66,7 @@ const CourseEnrolment = React.lazy(() => import('./components/user-admin/CourseE
 const CourseRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
 const LectureRecords = React.lazy(() => import('./components/user-admin/LecturerRecords'))
 const StudentRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
-
+const FacultyRecords = React.lazy(() => import('./components/user-admin/FacultyRecords'))
 const GradeCourse = React.lazy(() => import('./components/user-lecturer/GradeCourse'))
 const StudentPerformance = React.lazy(() => import('./components/user-lecturer/StudentPerformance'))
 const ViewMyCourses = React.lazy(() => import('./components/user-lecturer/ViewCourses'))
@@ -90,6 +90,7 @@ const routes = [
   { path: '/admin/lecturerrecords', name: 'Lecturer Records', element: LectureRecords},
   { path: '/admin/studentrecords', name: 'Student Records', element: StudentRecords},
   { path: '/admin/courserecords', name: 'Course Records', element: CourseRecords},
+  { path: '/admin/facultyrecords', name: 'Faculty Records', element: FacultyRecords},
   { path: '/lecturer/gradecourse', name: 'Grade Course', element: GradeCourse},
   { path: '/lecturer/student', name: 'Student Performance', element: StudentPerformance},
   { path: '/lecturer/courses', name: 'View My Courses', element: ViewMyCourses},

@@ -63,6 +63,18 @@ const _navadmin = [
       },
     ],
   },
+  {
+    component: CNavGroup,
+    name: 'Faculties',
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Faculty Records',
+        to: '/admin/facultyrecords',
+      },
+    ],
+  },
 ]
 
 export default _navadmin
