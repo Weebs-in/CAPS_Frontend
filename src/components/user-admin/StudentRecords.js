@@ -80,7 +80,7 @@ const StudentRecords = () => {
                     }));
                     await fetchStudents();
                 } else {
-                    console.error('Failed to create faculty: ', responseData.msg);
+                    console.error('Failed to create student: ', responseData.msg);
                     addToast(resultToast({
                         toastColor: config.TOAST_FAILED_COLOR,
                         toastMessage: config.TOAST_FAILED_MSG
@@ -105,7 +105,7 @@ const StudentRecords = () => {
     const handleStudentSelection = (studentId) => {
         console.log("selected id: " + studentId)
         setSelectedStudentId(studentId);
-        const selectedStudent = faculties.find((faculty) => student.studentId === studentId);
+        const selectedStudent = students.find((student) => student.studentId === studentId);
         setName(selectedStudent.studentName);
     };
 
@@ -121,7 +121,7 @@ const StudentRecords = () => {
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Faculty updated');
+                    console.log('Student updated');
                     setVisibleUpd(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
@@ -129,7 +129,7 @@ const StudentRecords = () => {
                     }));
                     await fetchStudents();
                 } else {
-                    console.error('Failed to update faculty: ', responseData.msg);
+                    console.error('Failed to update student: ', responseData.msg);
                     addToast(resultToast({
                         toastColor: config.TOAST_FAILED_COLOR,
                         toastMessage: config.TOAST_FAILED_MSG
@@ -162,7 +162,7 @@ const StudentRecords = () => {
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Faculty deleted');
+                    console.log('Student deleted');
                     setVisibleDel(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
