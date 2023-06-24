@@ -18,7 +18,9 @@ const config = {
     // student
     getAllCoursesByStudentId: '/course_student/getAllCoursesByStudentId',
     getCourseById: '/course/getCourseById',
-    getAllCourses: '/course/getAllCourses'
+    getAllCourses: '/course/getAllCourses',
+    getAllCoursesStudentCanEnroll: '/course_student/viewStudentCourseListEnrolment',
+    studentEnrollCourse: '/course_student/studentEnrollCourse'
 };
 
 export default config;
