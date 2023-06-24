@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import DatePicker from "react-datepicker";
+import { parseISO, format } from 'date-fns';
 
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -27,11 +27,12 @@ const LecturerRecords = () => {
     const [lecturers, setLecturers] = useState([]);
     const [selectedLecturerId, setSelectedLecturerId] = useState(null);
     const [matricNo, setMatricNo] = useState('');
+    const [password, setPassword] = useState('');
     const [lastName, setLastName] = useState('');
     const [firstMidName, setFirstMidName] = useState('');
     const [gender, setGender] = useState('');
     const [dateOfBirth, setDob] = useState('');
-    const [lecturerFacultyId, setLecturerFacultyId] = useState('');
+    const [lecturerFacultyId, setLecturerFacultyId] = useState({ facultyId: '' });
     // modal visibility
     const [visible, setVisible] = useState(false);
     const [visible_upd, setVisibleUpd] = useState(false);
@@ -93,17 +94,29 @@ const LecturerRecords = () => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
         const formDataObject = Object.fromEntries(formData.entries());
+        const rawDateOfBirth = formDataObject["lecturerDob"].trim();
+        const formattedDateOfBirth = rawDateOfBirth.replace(/\//g, '-');
+        const parsedDateOfBirth = parseISO(formattedDateOfBirth);
+
+        console.log(formDataObject);
+
         try {
-            const params = new URLSearchParams();
-            params.append('matriculationNumber', formDataObject["lecturerMatriculationNumber"].trim());
-            params.append('password', formDataObject["lecturerPassword"].trim());
-            params.append('lastName', formDataObject["lecturerLastName"].trim());
-            params.append('firstMidName', formDataObject["lecturerFirstMidName"].trim());
-            params.append('gender', formDataObject["lecturerGender"].trim());
-            params.append('dateOfBirth', formDataObject["lecturerDob"].trim());
-            params.append('lecturer_faculty_id', formDataObject["lecturerFacultyId"].trim());
-            const response = await fetch(config.createLecturer + `?${params.toString()}`, {
-                method: 'POST'
+            const response = await fetch(config.createLecturer, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    matriculationNumber: formDataObject["lecturerMatriculationNumber"].trim(),
+                    password: formDataObject["lecturerPassword"].trim(),
+                    lastName: formDataObject["lecturerLastName"].trim(),
+                    firstMidName: formDataObject["lecturerFirstMidName"].trim(),
+                    gender: formDataObject["lecturerGender"].trim(),
+                    dateOfBirth: parsedDateOfBirth,
+                    faculty: {
+                        facultyId: formDataObject["faculty.facultyId"].trim()
+                    },
+                }),
             });
             if (response.ok) {
                 const responseData = await response.json();
@@ -147,22 +160,45 @@ const LecturerRecords = () => {
         setFirstMidName(selectedLecturer.firstMidName);
         setGender(selectedLecturer.gender);
         setDob(selectedLecturer.dateOfBirth);
-        setFacultyId(selectedLecturer.lecturerFacultyId);
+        setLecturerFacultyId(selectedLecturer.faculty.facultyId);
     };
 
     const handleUpdate = async (event) => {
         event.preventDefault();
+        const rawDateOfBirth = dateOfBirth.trim();
+        const formattedDateOfBirth = rawDateOfBirth.replace(/\//g, '-');
+        const parsedDateOfBirth = parseISO(formattedDateOfBirth);
+        // to check JSON content in console'
+        console.log('Request Body:', JSON.stringify({
+            lecturerId: selectedLecturerId,
+            matriculationNumber: matricNo.trim(),
+            password: password.trim(),
+            lastName: lastName.trim(),
+            firstMidName: firstMidName.trim(),
+            gender: gender.trim(),
+            dateOfBirth: parsedDateOfBirth,
+            faculty: {
+                facultyId: lecturerFacultyId
+            }
+        }));
         try {
-            const params = new URLSearchParams();
-            params.append('lecturerId', selectedLecturerId);
-            params.append('newLecturerMatricNo', matricNo.trim());
-            params.append('newLecturerLastName', lastName.trim());
-            params.append('newLecturerFirstMidName', firstMidName.trim());
-            params.append('newLecturerGender', gender.trim());
-            params.append('newLecturerDob', dob.trim());
-            params.append('newLecturerFacultyId', facultyId.trim());
-            const response = await fetch(config.updateLecturer + `?${params.toString()}`, {
-                method: 'PUT'
+            const response = await fetch(config.updateLecturer, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    lecturerId: selectedLecturerId,
+                    matriculationNumber: matricNo.trim(),
+                    password: password.trim(),
+                    lastName: lastName.trim(),
+                    firstMidName: firstMidName.trim(),
+                    gender: gender.trim(),
+                    dateOfBirth: formattedDateOfBirth,
+                    faculty: {
+                        facultyId: lecturerFacultyId
+                    },
+                }),
             });
             if (response.ok) {
                 const responseData = await response.json();
@@ -202,7 +238,7 @@ const LecturerRecords = () => {
         try {
             const params = new URLSearchParams();
             params.append('lecturerId', selectedLecturerId);
-            const response = await fetch(config.deleteFaculty + `?${params.toString()}`, {
+            const response = await fetch(config.deleteLecturer + `?${params.toString()}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
@@ -340,28 +376,13 @@ const LecturerRecords = () => {
                             <CRow className="mb-3">
                                 <CFormLabel className="col-sm-2 col-form-label">Date of Birth</CFormLabel>
                                 <CCol sm={10}>
-                                    <CInputGroup>
-                                        <DatePicker
-                                            selected={dateOfBirth}
-                                            onChange={(date) => {
-                                                console.log("DatePicker onChange event:", date);
-                                                setDob(date);
-                                            }}
-                                            onFocus={(e) => e.stopPropagation()} // Prevent event propagation
-                                            className="form-control"
-                                            name="lecturerDob"
-                                        />
-                                        <CInputGroupText>
-                                            {/* Display the selected date value */}
-                                            {dateOfBirth && dateOfBirth.toLocaleDateString()}
-                                        </CInputGroupText>
-                                    </CInputGroup>
+                                    <CFormInput type="text" name="lecturerDob"/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
                                 <CFormLabel className="col-sm-2 col-form-label">Faculty</CFormLabel>
                                 <CCol sm={10}>
-                                    <CFormSelect name="lecturerFacultyId">
+                                    <CFormSelect name="faculty.facultyId">
                                         <option value="">Select Faculty</option>
                                         {faculties.map(faculty => (
                                             <option key={faculty.facultyId} value={faculty.facultyId}>
@@ -395,6 +416,14 @@ const LecturerRecords = () => {
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Password</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={password}
+                                                onChange={(event) => setPassword(event.target.value)}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
                                 <CFormLabel className="col-sm-2 col-form-label">Last Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
@@ -424,22 +453,14 @@ const LecturerRecords = () => {
                                     </CFormSelect>
                                 </CCol>
                             </CRow>
-                            <CInputGroup>
-                                <DatePicker
-                                    selected={dateOfBirth}
-                                    onChange={(date) => {
-                                        console.log("DatePicker onChange event:", date);
-                                        setDob(date);
-                                    }}
-                                    onFocus={(e) => e.stopPropagation()} // Prevent event propagation
-                                    className="form-control"
-                                    name="lecturerDob"
-                                />
-                                <CInputGroupText>
-                                    {/* Display the selected date value */}
-                                    {dateOfBirth && dateOfBirth.toLocaleDateString()}
-                                </CInputGroupText>
-                            </CInputGroup>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Date of Birth</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={dateOfBirth}
+                                                onChange={(event) => setDob(event.target.value)}/>
+                                </CCol>
+                            </CRow>
                             <CRow className="mb-3">
                                 <CFormLabel className="col-sm-2 col-form-label">Faculty</CFormLabel>
                                 <CCol sm={10}>
@@ -484,10 +505,18 @@ const LecturerRecords = () => {
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Lecturer Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Last Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={`${lastName} ${firstMidName}`}
+                                                value={lastName}
+                                                disabled={true}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">First Middle Name</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={firstMidName}
                                                 disabled={true}/>
                                 </CCol>
                             </CRow>

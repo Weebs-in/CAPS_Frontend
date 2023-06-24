@@ -65,20 +65,20 @@ const CourseEnrolment = () => {
         const formDataObject = Object.fromEntries(formData.entries());
         try {
             const params = new URLSearchParams();
-            params.append('studentName', formDataObject["courseName"].trim());
+            params.append('courseName', formDataObject["courseName"].trim());
             const response = await fetch(config.createCourse + `?${params.toString()}`, {
                 method: 'POST'
             });
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Student created');
+                    console.log('Course created');
                     setVisible(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
                         toastMessage: config.TOAST_SUCCESS_MSG
                     }));
-                    await fetchStudents();
+                    await fetchCourses();
                 } else {
                     console.error('Failed to create faculty: ', responseData.msg);
                     addToast(resultToast({
@@ -298,7 +298,7 @@ const CourseEnrolment = () => {
                                 <CFormLabel className="col-sm-2 col-form-label">Course Id</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={selectedStudentId}
+                                                value={selectedCourseId}
                                                 disabled={true}/>
                                 </CCol>
                             </CRow>
