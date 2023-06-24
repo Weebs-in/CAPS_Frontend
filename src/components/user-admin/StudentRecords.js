@@ -15,17 +15,21 @@ import {
     CTableRow, CToast, CToastBody, CToaster, CToastHeader,
 } from '@coreui/react'
 import config from 'src/config.js';
+import { parseISO } from "date-fns";
 
-const CourseRecords = () => {
+const StudentRecords = () => {
     // variables
     const [faculties, setFaculties] = useState([]);
-    const [courses, setCourses] = useState([]);
-    const [selectedCourseId, setSelectedCourseId] = useState(null);
-    const [code, setCode] = useState('');
-    const [name, setName] = useState('');
-    const [credits, setCredits] = useState('');
-    const [capacity, setCapacity] = useState('');
-    const [courseFacultyId, setCourseFacultyId] = useState({ facultyId: '' });
+    const [students, setStudents] = useState([]);
+    const [selectedStudentId, setSelectedStudentId] = useState(null);
+    const [matricNo, setMatricNo] = useState('');
+    const [password, setPassword] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [firstMidName, setFirstMidName] = useState('');
+    const [enrollmentDate, setEnrollmentDate] = useState('');
+    const [gender, setGender] = useState('');
+    const [dateOfBirth, setDob] = useState('');
+    const [studentFacultyId, setStudentFacultyId] = useState({ facultyId: '' });
     // modal visibility
     const [visible, setVisible] = useState(false);
     const [visible_upd, setVisibleUpd] = useState(false);
@@ -36,22 +40,21 @@ const CourseRecords = () => {
     const [toast, addToast] = useState(0)
     const toaster = useRef()
 
-
     useEffect(() => {
-        fetchCourses();
+        fetchStudents();
     }, []);
 
-    const fetchCourses = async () => {
-        fetch(config.getAllCourses, {
+    const fetchStudents = async () => {
+        fetch(config.getAllStudents, {
             headers: {
                 'Content-Type': 'application/json'
             },
             method: 'GET'
         }).then(response => response.json()).then(data => {
-            const coursesData = data.data;
-            setCourses(coursesData);
+            const studentsData = data.data;
+            setStudents(studentsData);
         }).catch(error => {
-            console.error('Error fetching course data:', error);
+            console.error('Error fetching student data:', error);
         });
     };
 
@@ -87,35 +90,50 @@ const CourseRecords = () => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
         const formDataObject = Object.fromEntries(formData.entries());
+        const rawDateOfBirth = formDataObject["studentDob"].trim();
+        const formattedDateOfBirth = rawDateOfBirth.replace(/\//g, '-');
+        const parsedDateOfBirth = parseISO(formattedDateOfBirth);
+        // use this if we want enrollmentDate = date of creation of object in system
+        // const enrollmentDate = new Date().toISOString();
+
+        const rawEnrollmentDate = formDataObject["studentEnrollmentDate"].trim();
+        const formattedEnrollmentDate = rawEnrollmentDate.replace(/\//g, '-');
+        const parsedEnrollmentDate = new Date(formattedEnrollmentDate);
+        const isoEnrollmentDate = parsedEnrollmentDate.toISOString();
+
         console.log(formDataObject);
+
         try {
-            const response = await fetch(config.createCourse, {
+            const response = await fetch(config.createStudent, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    courseCode: formDataObject["courseCode"].trim(),
-                    courseName: formDataObject["courseName"].trim(),
-                    courseCredits: formDataObject["courseCredits"].trim(),
-                    courseCapacity: formDataObject["courseCapacity"].trim(),
+                    matriculationNumber: formDataObject["studentMatriculationNumber"].trim(),
+                    password: formDataObject["studentPassword"].trim(),
+                    lastName: formDataObject["studentLastName"].trim(),
+                    firstMidName: formDataObject["studentFirstMidName"].trim(),
+                    enrollmentDate: isoEnrollmentDate,
+                    gender: formDataObject["studentGender"].trim(),
+                    dateOfBirth: parsedDateOfBirth,
                     faculty: {
                         facultyId: formDataObject["faculty.facultyId"].trim()
-                    }
+                    },
                 }),
             });
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Course created');
+                    console.log('Student created');
                     setVisible(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
                         toastMessage: config.TOAST_SUCCESS_MSG
                     }));
-                    await fetchCourses();
+                    await fetchStudents();
                 } else {
-                    console.error('Failed to create faculty: ', responseData.msg);
+                    console.error('Failed to create student: ', responseData.msg);
                     addToast(resultToast({
                         toastColor: config.TOAST_FAILED_COLOR,
                         toastMessage: config.TOAST_FAILED_MSG
@@ -137,59 +155,65 @@ const CourseRecords = () => {
         }
     };
 
-    const handleCourseSelection = (courseId) => {
-        console.log("selected id: " + courseId)
-        setSelectedCourseId(courseId);
-        const selectedCourse = courses.find((course) => course.courseId === courseId);
-        setCode(selectedCourse.courseCode);
-        setName(selectedCourse.courseName);
-        setCredits(selectedCourse.courseCredits);
-        setCapacity(selectedCourse.courseCapacity);
-        setCourseFacultyId(selectedCourse.faculty.facultyId);
+    const handleStudentSelection = (studentId) => {
+        console.log("selected id: " + studentId)
+        setSelectedStudentId(studentId);
+        const selectedStudent = students.find((student) => student.studentId === studentId);
+        setMatricNo(selectedStudent.matriculationNumber);
+        setPassword(selectedStudent.password);
+        setLastName(selectedStudent.lastName);
+        setFirstMidName(selectedStudent.firstMidName);
+        setGender(selectedStudent.gender);
+        setDob(selectedStudent.dateOfBirth);
+        setStudentFacultyId(selectedStudent.faculty.facultyId);
+        setEnrollmentDate(selectedStudent.enrollmentDate);
     };
 
     const handleUpdate = async (event) => {
         event.preventDefault();
-        // to check JSON content in console
-        console.log('Request Body:', JSON.stringify({
-            courseId: selectedCourseId,
-            courseCode: code.trim(),
-            courseName: name.trim(),
-            courseCredits: credits.trim(),
-            courseCapacity: capacity.trim(),
-            faculty: {
-                facultyId: courseFacultyId.trim()
-            }
-        }));
+        const rawDateOfBirth = dateOfBirth.trim();
+        const formattedDateOfBirth = rawDateOfBirth.replace(/\//g, '-');
+        const parsedDateOfBirth = parseISO(formattedDateOfBirth);
+
+        // use this if we want enrollmentDate = date of creation of object in system
+        // const enrollmentDate = new Date().toISOString();
+
+        const rawEnrollmentDate = enrollmentDate.trim();
+        const formattedEnrollmentDate = rawEnrollmentDate.replace(/\//g, '-');
+        const parsedEnrollmentDate = new Date(formattedEnrollmentDate);
+        const isoEnrollmentDate = parsedEnrollmentDate.toISOString();
         try {
-            const response = await fetch(config.updateCourse, {
+            const response = await fetch(config.updateStudent, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    courseId: selectedCourseId,
-                    courseCode: code.trim(),
-                    courseName: name.trim(),
-                    courseCredits: credits.trim(),
-                    courseCapacity: capacity.trim(),
+                    studentId: selectedStudentId,
+                    matriculationNumber: matricNo.trim(),
+                    password: password.trim(),
+                    lastName: lastName.trim(),
+                    firstMidName: firstMidName.trim(),
+                    enrollmentDate: isoEnrollmentDate,
+                    gender: gender.trim(),
+                    dateOfBirth: parsedDateOfBirth,
                     faculty: {
-                        facultyId: courseFacultyId.trim()
+                        facultyId: studentFacultyId
                     },
                 }),
             });
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Faculty updated');
+                    console.log('Student updated');
                     setVisibleUpd(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
                         toastMessage: config.TOAST_SUCCESS_MSG
                     }));
-                    await fetchCourses();
+                    await fetchStudents();
                 } else {
-                    console.error('Failed to update course: ', responseData.msg);
+                    console.error('Failed to update student: ', responseData.msg);
                     addToast(resultToast({
                         toastColor: config.TOAST_FAILED_COLOR,
                         toastMessage: config.TOAST_FAILED_MSG
@@ -215,22 +239,22 @@ const CourseRecords = () => {
         event.preventDefault();
         try {
             const params = new URLSearchParams();
-            params.append('courseId', selectedCourseId);
-            const response = await fetch(config.deleteCourse + `?${params.toString()}`, {
+            params.append('studentId', selectedStudentId);
+            const response = await fetch(config.deleteStudent + `?${params.toString()}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Course deleted');
+                    console.log('Student deleted');
                     setVisibleDel(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
                         toastMessage: config.TOAST_SUCCESS_MSG
                     }));
-                    await fetchCourses();
+                    await fetchStudents();
                 } else {
-                    console.error('Failed to delete course: ', responseData.msg);
+                    console.error('Failed to delete student: ', responseData.msg);
                     addToast(resultToast({
                         toastColor: config.TOAST_FAILED_COLOR,
                         toastMessage: config.TOAST_FAILED_MSG
@@ -257,11 +281,11 @@ const CourseRecords = () => {
             <CCol xs={12}>
                 <CCard className="mb-4">
                     <CCardHeader>
-                        <h3 style={{marginTop: 10 + 'px'}}>Course List</h3>
+                        <h3 style={{marginTop: 10 + 'px'}}>Student List</h3>
                     </CCardHeader>
                     <CCardBody>
                         <p className="text-medium-emphasis small">
-                            Course list within CAPS.
+                            Student list within CAPS.
                         </p>
                         <CButton color="success"
                                  style={{marginRight: 10 + 'px', marginBottom: 20 + 'px'}}
@@ -272,37 +296,41 @@ const CourseRecords = () => {
                             <CTableHead>
                                 <CTableRow>
                                     <CTableHeaderCell scope="col">Id</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Course Code</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Course Name</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Credits</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Capacity</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Vacancy</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Matric No</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">First Mid Name</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Birthdate</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Faculty</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">GPA</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Enrolment Date</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Options</CTableHeaderCell>
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {courses.map(item => (
-                                    <CTableRow key={item.courseId}>
-                                        <CTableHeaderCell scope="row">{item.courseId}</CTableHeaderCell>
-                                        <CTableDataCell>{item.courseCode}</CTableDataCell>
-                                        <CTableDataCell>{item.courseName}</CTableDataCell>
-                                        <CTableDataCell>{item.courseCredits}</CTableDataCell>
-                                        <CTableDataCell>{item.courseCapacity}</CTableDataCell>
-                                        <CTableDataCell>{item.courseVacancy}</CTableDataCell>
+                                {students.map(item => (
+                                    <CTableRow key={item.studentId}>
+                                        <CTableHeaderCell scope="row">{item.studentId}</CTableHeaderCell>
+                                        <CTableDataCell>{item.matriculationNumber}</CTableDataCell>
+                                        <CTableDataCell>{item.lastName}</CTableDataCell>
+                                        <CTableDataCell>{item.firstMidName}</CTableDataCell>
+                                        <CTableDataCell>{item.gender}</CTableDataCell>
+                                        <CTableDataCell>{item.dateOfBirth}</CTableDataCell>
                                         <CTableDataCell>{item.faculty.facultyName}</CTableDataCell>
+                                        <CTableDataCell>{item.gpa}</CTableDataCell>
+                                        <CTableDataCell>{item.enrollmentDate}</CTableDataCell>
                                         <CTableDataCell>
                                             <CButton color="info"
                                                      style={{marginRight: 10 + 'px'}}
                                                      onClick={() => {
                                                          setVisibleUpd(!visible_upd);
-                                                         handleCourseSelection(item.courseId)
+                                                         handleStudentSelection(item.studentId)
                                                      }}>Update</CButton>
                                             <CButton color="danger"
                                                      style={{marginRight: 10 + 'px'}}
                                                      onClick={() => {
                                                          setVisibleDel(!visible_Del);
-                                                         handleCourseSelection(item.courseId)
+                                                         handleStudentSelection(item.studentId)
                                                      }}>Delete</CButton>
                                         </CTableDataCell>
                                     </CTableRow>
@@ -313,32 +341,48 @@ const CourseRecords = () => {
                 </CCard>
                 <CModal alignment="center" size="lg" visible={visible} onClose={() => setVisible(false)}>
                     <CModalHeader>
-                        <CModalTitle>Create a course</CModalTitle>
+                        <CModalTitle>Create a student</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
                         <CForm ref={formRef}>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Code</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Matriculation Number</CFormLabel>
                                 <CCol sm={10}>
-                                    <CFormInput type="text" name="courseCode"/>
+                                    <CFormInput type="text" name="studentMatriculationNumber"/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Password</CFormLabel>
                                 <CCol sm={10}>
-                                    <CFormInput type="text" name="courseName"/>
+                                    <CFormInput type="text" name="studentPassword"/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Credits</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Last Name</CFormLabel>
                                 <CCol sm={10}>
-                                    <CFormInput type="text" name="courseCredits"/>
+                                    <CFormInput type="text" name="studentLastName"/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Capacity</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">First Middle Name</CFormLabel>
                                 <CCol sm={10}>
-                                    <CFormInput type="text" name="courseCapacity"/>
+                                    <CFormInput type="text" name="studentFirstMidName"/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Gender</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormSelect name="studentGender">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </CFormSelect>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Date of Birth</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text" name="studentDob"/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
@@ -354,6 +398,12 @@ const CourseRecords = () => {
                                     </CFormSelect>
                                 </CCol>
                             </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Enrolment Date</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text" name="studentEnrollmentDate"/>
+                                </CCol>
+                            </CRow>
                         </CForm>
                     </CModalBody>
                     <CModalFooter>
@@ -365,49 +415,71 @@ const CourseRecords = () => {
                 </CModal>
                 <CModal alignment="center" size="lg" visible={visible_upd} onClose={() => setVisibleUpd(false)}>
                     <CModalHeader>
-                        <CModalTitle>Update a course</CModalTitle>
+                        <CModalTitle>Update a student</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
                         <CForm>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Code</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Matriculation Number</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={code}
-                                                onChange={(event) => setCode(event.target.value)}/>
+                                                value={matricNo}
+                                                onChange={(event) => setMatricNo(event.target.value)}/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Password</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={name}
-                                                onChange={(event) => setName(event.target.value)}/>
+                                                value={password}
+                                                onChange={(event) => setPassword(event.target.value)}/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Credits</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Last Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={credits}
-                                                onChange={(event) => setCredits(event.target.value)}/>
+                                                value={lastName}
+                                                onChange={(event) => setLastName(event.target.value)}/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Capacity</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">First Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={capacity}
-                                                onChange={(event) => setCapacity(event.target.value)}/>
+                                                value={firstMidName}
+                                                onChange={(event) => setFirstMidName(event.target.value)}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Gender</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormSelect
+                                        name="lecturerGender"
+                                        value={gender}
+                                        onChange={(event) => setGender(event.target.value)}
+                                    >
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </CFormSelect>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Date of Birth</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={dateOfBirth}
+                                                onChange={(event) => setDob(event.target.value)}/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
                                 <CFormLabel className="col-sm-2 col-form-label">Faculty</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormSelect
-                                        name="courseFacultyId"
-                                        value={courseFacultyId}
-                                        onChange={(event) => setCourseFacultyId(event.target.value)}
+                                        name="studentFacultyId"
+                                        value={studentFacultyId}
+                                        onChange={(event) => setStudentFacultyId(event.target.value)}
                                     >
                                         <option value="">Select Faculty</option>
                                         {faculties.map(faculty => (
@@ -416,6 +488,14 @@ const CourseRecords = () => {
                                             </option>
                                         ))}
                                     </CFormSelect>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Enrolment Date</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={enrollmentDate}
+                                                onChange={(event) => setEnrollmentDate(event.target.value)}/>
                                 </CCol>
                             </CRow>
                         </CForm>
@@ -429,7 +509,7 @@ const CourseRecords = () => {
                 </CModal>
                 <CModal alignment="center" size="lg" visible={visible_Del} onClose={() => setVisibleDel(false)}>
                     <CModalHeader>
-                        <CModalTitle>Delete a course</CModalTitle>
+                        <CModalTitle>Delete a student</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
                         <CAlert color="danger">
@@ -437,18 +517,26 @@ const CourseRecords = () => {
                         </CAlert>
                         <CForm>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Id</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Student Id</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={selectedCourseId}
+                                                value={selectedStudentId}
                                                 disabled={true}/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Last Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={name}
+                                                value={lastName}
+                                                disabled={true}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">First Middle Name</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={firstMidName}
                                                 disabled={true}/>
                                 </CCol>
                             </CRow>
@@ -467,4 +555,4 @@ const CourseRecords = () => {
     )
 }
 
-export default CourseRecords
+export default StudentRecords

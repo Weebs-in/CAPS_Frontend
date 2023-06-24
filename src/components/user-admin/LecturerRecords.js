@@ -358,7 +358,7 @@ const LecturerRecords = () => {
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">First Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">First Middle Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text" name="lecturerFirstMidName"/>
                                 </CCol>
