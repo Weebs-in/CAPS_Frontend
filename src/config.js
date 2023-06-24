@@ -14,7 +14,11 @@ const config = {
     getAllFaculties: '/faculty/getAllFaculties',
     createFaculty: '/faculty/saveFaculty',
     updateFaculty: '/faculty/updateFaculty',
-    deleteFaculty: '/faculty/deleteFacultyById'
+    deleteFaculty: '/faculty/deleteFacultyById',
+    // student
+    getAllCoursesByStudentId: '/course_student/getAllCoursesByStudentId',
+    getCourseById: '/course/getCourseById',
+    getAllCourses: '/course/getAllCourses'
 };
 
 export default config;

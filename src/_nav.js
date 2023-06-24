@@ -1,15 +1,16 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
+  cilBarChart,
   cilBell,
   cilCalculator,
   cilChartPie,
   cilCursor,
   cilDescription,
-  cilDrop,
+  cilDrop, cilListRich,
   cilNotes,
   cilPencil,
-  cilPuzzle,
+  cilPuzzle, cilSchool,
   cilSpeedometer,
   cilStar,
 } from '@coreui/icons'
@@ -45,6 +46,24 @@ const _nav = [
   {
     component: CNavTitle,
     name: 'Components',
+  },
+  {
+    component: CNavItem,
+    name: 'Grades and GPA',
+    to: '/student/grades-gpa',
+    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'View Courses',
+    to: '/student/view-courses',
+    icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Enroll for a Course',
+    to: '/student/enroll-course',
+    icon: <CIcon icon={cilSchool} customClassName="nav-icon" />,
   },
   {
     component: CNavGroup,
