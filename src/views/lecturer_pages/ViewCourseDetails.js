@@ -16,7 +16,7 @@ import {
     CTableRow, CToast, CToastBody, CToaster, CToastHeader,
 } from '@coreui/react'
 import config from 'src/config.js';
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 const ViewCoursesDetails = () => {
     // variables
