@@ -65,11 +65,6 @@ const ViewCoursesTaught = () => {
         });
     };
 
-    const handleCourseDetails = async (courseId) => {
-        console.log("selected id: " + courseId)
-        // await fetchCourseDetails(courseId);
-    };
-
     return (
         <CRow>
             <CCol xs={12}>
