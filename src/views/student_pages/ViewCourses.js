@@ -41,20 +41,29 @@ const ViewCourses = () => {
             const courseRecordData = data.data;
             console.log(courseRecordData);
             courseRecordData.map(item => {
+                // grade
                 if (item.courseStudentGrade == null) {
-                    item.courseStudentGrade = "No Grade yet";
+                    item.courseStudentGrade = "Not graded yet";
                 }
+                // status
                 if (item.courseStudentStatus === 0) {
                     item.courseStudentStatus = "Enrolled";
                     item.badgeColor = "info";
                 } else if (item.courseStudentStatus === -1) {
                     item.courseStudentStatus = "Banned";
-                    item.courseStudentGrade = "Banned";
+                    item.courseStudentGrade = "Grade cancelled";
                     item.badgeColor = "danger";
+                } else if (item.courseStudentStatus === 1) {
+                    item.courseStudentStatus = "In Progress";
+                    item.badgeColor = "info";
                 } else if (item.courseStudentStatus === 2) {
                     item.courseStudentStatus = "Completed";
                     item.badgeColor = "success";
+                } else if (item.courseStudentStatus === 3) {
+                    item.courseStudentStatus = "Failed";
+                    item.badgeColor = "danger";
                 } else {
+                    item.courseStudentStatus = "Deviant";
                     item.badgeColor = "primary";
                 }
             })
@@ -78,8 +87,17 @@ const ViewCourses = () => {
             if (courseDetailsData.courseStatus === 0) {
                 courseDetailsData.courseStatus = "Enrolling";
             }
+            else if (courseDetailsData.courseStatus === 1) {
+                courseDetailsData.courseStatus = "In Progress";
+            }
+            else if (courseDetailsData.courseStatus === 2) {
+                courseDetailsData.courseStatus = "Completed";
+            }
             if (courseDetailsData.courseEnrollmentStatus === 0) {
                 courseDetailsData.courseEnrollmentStatus = "Enrolling";
+            }
+            else if (courseDetailsData.courseEnrollmentStatus === -1) {
+                courseDetailsData.courseEnrollmentStatus = "Not Enrolling";
             }
             setCourseDetails(courseDetailsData);
             setFacultyName(courseDetailsData.faculty.facultyName)

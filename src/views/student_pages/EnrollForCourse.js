@@ -48,7 +48,7 @@ const EnrollForCourse = () => {
                 if (item.courseEnrollmentStatus === 0) {
                     item.courseEnrollmentStatus = "Enrolling";
                     item.enrollmentBadgeColor = "info";
-                } else if (item.courseEnrollmentStatus === 1) {
+                } else if (item.courseEnrollmentStatus === -1) {
                     item.courseEnrollmentStatus = "Not Enrolling";
                     item.enrollmentBadgeColor = "danger";
                 } else {

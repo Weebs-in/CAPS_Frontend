@@ -20,7 +20,8 @@ const config = {
     getCourseById: '/course/getCourseById',
     getAllCourses: '/course/getAllCourses',
     getAllCoursesStudentCanEnroll: '/course_student/viewStudentCourseListEnrolment',
-    studentEnrollCourse: '/course_student/studentEnrollCourse'
+    studentEnrollCourse: '/course_student/studentEnrollCourse',
+    viewStudentCourseGradeAndGPA: '/course_student/viewStudentCourseGradeAndGPA'
 };
 
 export default config;
