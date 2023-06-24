@@ -19,11 +19,7 @@ import {Link} from "react-router-dom";
 const ViewCoursesTaught = () => {
     // variables
     const [courseRecords, setCourseRecords] = useState([]);
-    const [courseDetails, setCourseDetails] = useState([]);
-    const [facultyName, setFacultyName] = useState([]);
     // modal visibility
-    const [visible_detail, setVisibleDetail] = useState(false);
-
     useEffect(() => {
         fetchCourseRecords();
     }, []);
