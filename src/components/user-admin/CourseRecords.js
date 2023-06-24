@@ -25,7 +25,7 @@ const CourseRecords = () => {
     const [name, setName] = useState('');
     const [credits, setCredits] = useState('');
     const [capacity, setCapacity] = useState('');
-    const [courseFacultyId, setCourseFacultyIdId] = useState('');
+    const [courseFacultyId, setCourseFacultyId] = useState({ facultyId: '' });
     // modal visibility
     const [visible, setVisible] = useState(false);
     const [visible_upd, setVisibleUpd] = useState(false);
@@ -87,15 +87,22 @@ const CourseRecords = () => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
         const formDataObject = Object.fromEntries(formData.entries());
+        console.log(formDataObject);
         try {
-            const params = new URLSearchParams();
-            params.append('courseCode', formDataObject["courseCode"].trim());
-            params.append('courseName', formDataObject["courseName"].trim());
-            params.append('courseCredits', formDataObject["courseCredits"].trim());
-            params.append('courseCapacity', formDataObject["courseCapacity"].trim());
-            params.append('course_faculty_id', formDataObject["courseFacultyId"].trim());
-            const response = await fetch(config.createCourse + `?${params.toString()}`, {
-                method: 'POST'
+            const response = await fetch(config.createCourse, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    courseCode: formDataObject["courseCode"].trim(),
+                    courseName: formDataObject["courseName"].trim(),
+                    courseCredits: formDataObject["courseCredits"].trim(),
+                    courseCapacity: formDataObject["courseCapacity"].trim(),
+                    faculty: {
+                        facultyId: formDataObject["faculty.facultyId"].trim()
+                    }
+                }),
             });
             if (response.ok) {
                 const responseData = await response.json();
@@ -139,16 +146,33 @@ const CourseRecords = () => {
 
     const handleUpdate = async (event) => {
         event.preventDefault();
+        // to check JSON content in console
+        console.log('Request Body:', JSON.stringify({
+            courseId: selectedCourseId,
+            courseCode: code.trim(),
+            courseName: name.trim(),
+            courseCredits: credits.trim(),
+            courseCapacity: capacity.trim(),
+            faculty: {
+                facultyId: courseFacultyId.trim()
+            }
+        }));
         try {
-            const params = new URLSearchParams();
-            params.append('courseId', selectedCourseId);
-            params.append('newCourseCode', code.trim());
-            params.append('newCourseName', name.trim());
-            params.append('newCourseCredits', credits.trim());
-            params.append('newCourseCapacity', capacity.trim());
-            params.append('newFacultyId', courseFacultyId.trim());
-            const response = await fetch(config.updateCourse + `?${params.toString()}`, {
-                method: 'PUT'
+            const response = await fetch(config.updateCourse, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    courseId: selectedCourseId,
+                    courseCode: code.trim(),
+                    courseName: name.trim(),
+                    courseCredits: credits.trim(),
+                    courseCapacity: capacity.trim(),
+                    faculty: {
+                        facultyId: courseFacultyId.trim()
+                    },
+                }),
             });
             if (response.ok) {
                 const responseData = await response.json();
@@ -316,7 +340,7 @@ const CourseRecords = () => {
                             <CRow className="mb-3">
                                 <CFormLabel className="col-sm-2 col-form-label">Faculty</CFormLabel>
                                 <CCol sm={10}>
-                                    <CFormSelect name="courseFacultyId">
+                                    <CFormSelect name="faculty.facultyId">
                                         <option value="">Select Faculty</option>
                                         {faculties.map(faculty => (
                                             <option key={faculty.facultyId} value={faculty.facultyId}>
