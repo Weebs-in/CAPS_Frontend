@@ -72,6 +72,12 @@ const _nav = [
     icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'View Student Performance',
+    to: '/lecturer/view-student-performance',
+    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  },
+  {
     component: CNavGroup,
     name: 'Base',
     to: '/base',

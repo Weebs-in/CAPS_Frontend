@@ -12,6 +12,7 @@ const GradesAndGpa = React.lazy(() => import('./views/student_pages/GradesAndGpa
 // Lecturer Imports
 const ViewCoursesTaught = React.lazy(() => import('./views/lecturer_pages/ViewCoursesTaught'))
 const ViewCourseDetails = React.lazy(() => import('./views/lecturer_pages/ViewCourseDetails'))
+const ViewStudentPerformance = React.lazy(() => import('./views/lecturer_pages/ViewStudentPerformance'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -74,17 +75,6 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 // const CourseRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
 // const LectureRecords = React.lazy(() => import('./components/user-admin/LecturerRecords'))
 // const StudentRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
-//
-// const GradeCourse = React.lazy(() => import('./components/user-lecturer/GradeCourse'))
-// const StudentPerformance = React.lazy(() => import('./components/user-lecturer/StudentPerformance'))
-// const ViewMyCourses = React.lazy(() => import('./components/user-lecturer/ViewCourses'))
-// const ViewEnrolment = React.lazy(() => import('./components/user-lecturer/ViewEnrolment'))
-//
-// const CourseHistory = React.lazy(() => import('./components/user-student/CourseHistory'))
-// const CourseList = React.lazy(() => import('./components/user-student/CourseList'))
-// const EnrolCourse = React.lazy(() => import('./components/user-student/EnrolCourse'))
-// const ScheduleStu = React.lazy(() => import('./components/user-student/ScheduleStu'))
-// const StudentGrades = React.lazy(() => import('./components/user-student/StudentGrades'))
 
 const routes = [
     {path: '/', exact: true, name: 'Home'},
@@ -98,6 +88,7 @@ const routes = [
     // Lecturer Routes
     {path: '/lecturer/view-courses-taught', name: 'View Courses Taught', element: ViewCoursesTaught},
     {path: '/lecturer/view-courses-taught/view-course-details', name: 'View Course Details', element: ViewCourseDetails},
+    {path: '/lecturer/view-student-performance', name: 'View Student Performance', element: ViewStudentPerformance},
 
     // example, can remove
     {path: '/forms', name: 'Forms', element: FormControl, exact: true},
@@ -108,15 +99,6 @@ const routes = [
     // {path: '/admin/lecturerrecords', name: 'Lecturer Records', element: LectureRecords},
     // {path: '/admin/studentrecords', name: 'Student Records', element: StudentRecords},
     // {path: '/admin/courserecords', name: 'Course Records', element: CourseRecords},
-    // {path: '/lecturer/gradecourse', name: 'Grade Course', element: GradeCourse},
-    // {path: '/lecturer/student', name: 'Student Performance', element: StudentPerformance},
-    // {path: '/lecturer/courses', name: 'View My Courses', element: ViewMyCourses},
-    // {path: '/lecturer/enrolment', name: 'View Enrolment', element: ViewEnrolment},
-    // {path: '/student/enrol', name: 'Enrol Course', element: EnrolCourse},
-    // {path: '/student/courselist', name: 'My Courses', element: CourseList},
-    // {path: '/student/history', name: 'Course History', element: CourseHistory},
-    // {path: '/student/viewcourse', name: 'Schedule', element: ScheduleStu},
-    // {path: '/student/grades', name: 'Grades', element: StudentGrades},
     // {path: '/login/admin', name: 'Adminstrator Login', element: LoginAdmin},
     // {path: '/login/lecturer', name: 'Lecturer Login', element: LoginLecturer},
     // {path: '/login/student', name: 'Student Login', element: LoginStudent},
