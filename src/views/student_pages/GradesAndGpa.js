@@ -38,8 +38,6 @@ const GradesAndGpa = () => {
     // pie chart
     const statusCounts = [0, 0, 0, 0, 0];
 
-    const random = () => Math.round(Math.random() * 100)
-
     useEffect(() => {
         fetchGradeRecords();
     }, []);

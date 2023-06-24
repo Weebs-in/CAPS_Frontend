@@ -9,6 +9,10 @@ const ViewCourses = React.lazy(() => import('./views/student_pages/ViewCourses')
 const EnrollForCourse = React.lazy(() => import('./views/student_pages/EnrollForCourse'))
 const GradesAndGpa = React.lazy(() => import('./views/student_pages/GradesAndGpa'))
 
+// Lecturer Imports
+const ViewCoursesTaught = React.lazy(() => import('./views/lecturer_pages/ViewCoursesTaught'))
+const ViewCourseDetails = React.lazy(() => import('./views/lecturer_pages/ViewCourseDetails'))
+
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -90,6 +94,10 @@ const routes = [
     {path: '/student/view-courses', name: 'View Course', element: ViewCourses},
     {path: '/student/enroll-course', name: 'Enroll For Course', element: EnrollForCourse},
     {path: '/student/grades-gpa', name: 'Grades And GPA', element: GradesAndGpa},
+
+    // Lecturer Routes
+    {path: '/lecturer/view-courses-taught', name: 'View Courses Taught', element: ViewCoursesTaught},
+    {path: '/lecturer/view-courses-taught/view-course-details', name: 'View Course Details', element: ViewCourseDetails},
 
     // example, can remove
     {path: '/forms', name: 'Forms', element: FormControl, exact: true},

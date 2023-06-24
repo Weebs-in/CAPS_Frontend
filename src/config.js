@@ -21,7 +21,11 @@ const config = {
     getAllCourses: '/course/getAllCourses',
     getAllCoursesStudentCanEnroll: '/course_student/viewStudentCourseListEnrolment',
     studentEnrollCourse: '/course_student/studentEnrollCourse',
-    viewStudentCourseGradeAndGPA: '/course_student/viewStudentCourseGradeAndGPA'
+    viewStudentCourseGradeAndGPA: '/course_student/viewStudentCourseGradeAndGPA',
+    // lecturer
+    getCourseByLecturerId: '/course_lecturer/getCoursesByLecturerId',
+    getStudentsByCourseId: '/course/getStudentsByCourseId',
+    gradeStudentForCourse: '/course_lecturer/gradeStudentForCourse',
 };
 
 export default config;
