@@ -20,16 +20,25 @@ const CourseRecords = () => {
     // variables
     const [faculties, setFaculties] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [schedules, setSchedules] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
+    const filteredSchedules = schedules.filter(item => item.courseId === selectedCourseId);
+    const [selectedCourseScheduleId, setSelectedCourseScheduleId] = useState(null);
     const [code, setCode] = useState('');
     const [name, setName] = useState('');
     const [credits, setCredits] = useState('');
     const [capacity, setCapacity] = useState('');
     const [courseFacultyId, setCourseFacultyId] = useState({ facultyId: '' });
+    const [courseScheduleId, setCourseScheduleId] = useState({scheduleId:''});
+    const [day, setDay] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     // modal visibility
     const [visible, setVisible] = useState(false);
     const [visible_upd, setVisibleUpd] = useState(false);
     const [visible_Del, setVisibleDel] = useState(false);
+    const [visible_sch, setVisibleSch] = useState(false);
+
     // form
     const formRef = useRef(null);
     // toast
@@ -70,6 +79,24 @@ const CourseRecords = () => {
             setFaculties(facultiesData);
         }).catch(error => {
             console.error('Error fetching faculty data:', error);
+        });
+    };
+
+    useEffect(() => {
+        fetchSchedules();
+    }, []);
+
+    const fetchSchedules = async () => {
+        fetch(config.getAllSchedule, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
+        }).then(response => response.json()).then(data => {
+            const scheduleData = data.data;
+            setSchedules(scheduleData);
+        }).catch(error => {
+            console.error('Error fetching course data:', error);
         });
     };
 
@@ -136,7 +163,6 @@ const CourseRecords = () => {
             }));
         }
     };
-
     const handleCourseSelection = (courseId) => {
         console.log("selected id: " + courseId)
         setSelectedCourseId(courseId);
@@ -252,6 +278,97 @@ const CourseRecords = () => {
         }
     };
 
+    const handleSubmitSchedule = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(formRef.current);
+        const formDataObject = Object.fromEntries(formData.entries());
+        console.log(formDataObject);
+        try {
+            const response = await fetch(config.createScheduleByCourse, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    scheduleId: formDataObject["scheduleId"].trim(),
+                    courseId: formDataObject["courseId"].trim(),
+                }),
+            });
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.code === config.REQUEST_SUCCESS) {
+                    console.log('Course-Schedule created');
+                    setVisible(false);
+                    addToast(resultToast({
+                        toastColor: config.TOAST_SUCCESS_COLOR,
+                        toastMessage: config.TOAST_SUCCESS_MSG
+                    }));
+                    await fetchCourses();
+                } else {
+                    console.error('Failed to create course-schedule: ', responseData.msg);
+                    addToast(resultToast({
+                        toastColor: config.TOAST_FAILED_COLOR,
+                        toastMessage: config.TOAST_FAILED_MSG
+                    }));
+                }
+            } else {
+                console.error('Failed to submit form data, request failed');
+                addToast(resultToast({
+                    toastColor: config.TOAST_FAILED_COLOR,
+                    toastMessage: config.TOAST_FAILED_MSG
+                }));
+            }
+        } catch (error) {
+            console.error('Error while submitting form data:', error);
+            addToast(resultToast({
+                toastColor: config.TOAST_FAILED_COLOR,
+                toastMessage: config.TOAST_FAILED_MSG
+            }));
+        }
+    };
+
+    // deleting course-schedule function
+    const handleDeleteSchedule = async (event) => {
+        event.preventDefault();
+        try {
+            const params = new URLSearchParams();
+            params.append('courseId', selectedCourseScheduleId);
+            const response = await fetch(config.removeScheduleByCourse + `?${params.toString()}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.code === config.REQUEST_SUCCESS) {
+                    console.log('Course deleted');
+                    setVisibleDel(false);
+                    addToast(resultToast({
+                        toastColor: config.TOAST_SUCCESS_COLOR,
+                        toastMessage: config.TOAST_SUCCESS_MSG
+                    }));
+                    await fetchCourses();
+                } else {
+                    console.error('Failed to delete course: ', responseData.msg);
+                    addToast(resultToast({
+                        toastColor: config.TOAST_FAILED_COLOR,
+                        toastMessage: config.TOAST_FAILED_MSG
+                    }));
+                }
+            } else {
+                console.error('Failed to submit form data, request failed');
+                addToast(resultToast({
+                    toastColor: config.TOAST_FAILED_COLOR,
+                    toastMessage: config.TOAST_FAILED_MSG
+                }));
+            }
+        } catch (error) {
+            console.error('Error while submitting form data:', error);
+            addToast(resultToast({
+                toastColor: config.TOAST_FAILED_COLOR,
+                toastMessage: config.TOAST_FAILED_MSG
+            }));
+        }
+    };
+
     return (
         <CRow>
             <CCol xs={12}>
@@ -292,6 +409,12 @@ const CourseRecords = () => {
                                         <CTableDataCell>{item.courseVacancy}</CTableDataCell>
                                         <CTableDataCell>{item.faculty.facultyName}</CTableDataCell>
                                         <CTableDataCell>
+                                            <CButton color="warning"
+                                                     style={{marginRight: 10 + 'px'}}
+                                                     onClick={() => {
+                                                         setVisibleSch(!visible_sch);
+                                                         handleCourseSelection(item.courseId)
+                                                     }}>Schedule</CButton>
                                             <CButton color="info"
                                                      style={{marginRight: 10 + 'px'}}
                                                      onClick={() => {
@@ -361,6 +484,73 @@ const CourseRecords = () => {
                             Close
                         </CButton>
                         <CButton color="success" onClick={handleSubmit}>Save</CButton>
+                    </CModalFooter>
+                </CModal>
+                <CModal alignment="center" size="lg" visible={visible_sch} onClose={() => setVisibleSch(false)}>
+                    <CModalHeader>
+                        <CModalTitle>{code} {name}</CModalTitle>
+                    </CModalHeader>
+                    <CModalBody>
+                        <CRow className="mb-3">
+                            <CFormLabel className="col-sm-4 col-form-label">Course Schedule</CFormLabel>
+                            <CTable hover>
+                                <CTableHead>
+                                    <CTableRow>
+                                        <CTableHeaderCell scope="row">Id</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">Day</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">Start</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">End</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">Option</CTableHeaderCell>
+                                    </CTableRow>
+                                </CTableHead>
+                                <CTableBody>
+                                    {filteredSchedules.map(item => (
+                                        <CTableRow key={item.courseId}>
+                                            <CTableHeaderCell scope="row">{item.courseScheduleId}</CTableHeaderCell>
+                                            <CTableDataCell>{item.scheduleDayOfWeek}</CTableDataCell>
+                                            <CTableDataCell>{item.scheduleStartTime}</CTableDataCell>
+                                            <CTableDataCell>{item.scheduleEndTime}</CTableDataCell>
+                                            <CTableDataCell>
+                                                <CButton color="danger"
+                                                         style={{marginRight: 10 + 'px'}}
+                                                         onClick={() => {
+                                                             setVisibleDel(!visible_Del);
+                                                             handleCourseSelection(item.courseId)
+                                                         }}>Delete</CButton>
+                                            </CTableDataCell>
+                                        </CTableRow>
+                                    ))}
+                                </CTableBody>
+                            </CTable>
+                        </CRow>
+                        <CForm>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Add Schedule</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormSelect
+                                        name="courseScheduleId"
+                                        value={courseScheduleId}
+                                        onChange={(event) => setCourseScheduleId(event.target.value)}
+                                    >
+                                        <option value="">Select Timing</option>
+                                        {schedules.map(schedule => (
+                                            <option key={schedule.scheduleId} value={schedule.scheduleId}>
+                                                {schedule.scheduleDayOfWeek + ' ' + schedule.scheduleStartTime + ' to ' + schedule.scheduleEndTime}
+                                            </option>
+                                        ))}
+                                    </CFormSelect>
+                                    <CButton color="success"
+                                             style={{marginTop: 10 + 'px'}}
+                                             onClick={handleSubmitSchedule}>Save</CButton>
+                                </CCol>
+                            </CRow>
+                        </CForm>
+                    </CModalBody>
+                    <CModalFooter>
+                        <CButton color="secondary" onClick={() => setVisibleSch(false)}>
+                            Close
+                        </CButton>
+                        <CButton color="info" onClick={handleUpdate}>Update</CButton>
                     </CModalFooter>
                 </CModal>
                 <CModal alignment="center" size="lg" visible={visible_upd} onClose={() => setVisibleUpd(false)}>
