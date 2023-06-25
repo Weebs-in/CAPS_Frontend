@@ -65,13 +65,30 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
-// const CreateCourse = React.lazy(() => import('./components/user-admin/CreateCourse'))
-// const CreateLecturer = React.lazy(() => import('./components/user-admin/CreateLecturer'))
-// const CreateStudent = React.lazy(() => import('./components/user-admin/CreateStudent'))
-// const CourseEnrolment = React.lazy(() => import('./components/user-admin/CourseEnrolment'))
-// const CourseRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
-// const LectureRecords = React.lazy(() => import('./components/user-admin/LecturerRecords'))
-// const StudentRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
+const WhatsNew = React.lazy(() => import('./components/home/whatsnew'))
+const OurFaculties = React.lazy(() => import('./components/home/ourfaculties'))
+const AllCourses = React.lazy(() => import('./components/home/allcourses'))
+
+const Login = React.lazy(() => import('./components/home/Login'))
+const LoginAdmin = React.lazy(() => import('./components/user-admin/LoginAdmin'))
+const LoginLecturer = React.lazy(() => import('./components/user-lecturer/LoginLecturer'))
+const LoginStudent = React.lazy(() => import('./components/user-student/LoginStudent'))
+
+const CourseEnrolment = React.lazy(() => import('./components/user-admin/CourseEnrolment'))
+const CourseRecords = React.lazy(() => import('./components/user-admin/CourseRecords'))
+const LectureRecords = React.lazy(() => import('./components/user-admin/LecturerRecords'))
+const StudentRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
+const FacultyRecords = React.lazy(() => import('./components/user-admin/FacultyRecords'))
+const GradeCourse = React.lazy(() => import('./components/user-lecturer/GradeCourse'))
+const StudentPerformance = React.lazy(() => import('./components/user-lecturer/StudentPerformance'))
+const ViewMyCourses = React.lazy(() => import('./components/user-lecturer/ViewCourses'))
+const ViewEnrolment = React.lazy(() => import('./components/user-lecturer/ViewEnrolment'))
+
+const CourseHistory = React.lazy(() => import('./components/user-student/CourseHistory'))
+const CourseList = React.lazy(() => import('./components/user-student/CourseList'))
+const EnrolCourse = React.lazy(() => import('./components/user-student/EnrolCourse'))
+const ScheduleStu = React.lazy(() => import('./components/user-student/ScheduleStu'))
+const StudentGrades = React.lazy(() => import('./components/user-student/StudentGrades'))
 
 const routes = [
     {path: '/', exact: true, name: 'Home'},
@@ -99,6 +116,31 @@ const routes = [
     // {path: '/admin/lecturerrecords', name: 'Lecturer Records', element: LectureRecords},
     // {path: '/admin/studentrecords', name: 'Student Records', element: StudentRecords},
     // {path: '/admin/courserecords', name: 'Course Records', element: CourseRecords},
+  { path: '/', exact: true, name: 'Home' },
+  // { path: '/dashboard', exact:true, element: Dashboard, name: 'Dashboard'},
+  // example, can remove
+  { path: '/forms', name: 'Forms', element: FormControl, exact: true },
+  { path: '/admin/course-enrolment', name: 'Course Enrolment', element: CourseEnrolment},
+  { path: '/admin/lecturer-records', name: 'Lecturer Records', element: LectureRecords},
+  { path: '/admin/student-records', name: 'Student Records', element: StudentRecords},
+  { path: '/admin/course-records', name: 'Course Records', element: CourseRecords},
+  { path: '/admin/faculty-records', name: 'Faculty Records', element: FacultyRecords},
+  { path: '/lecturer/grade-course', name: 'Grade Course', element: GradeCourse},
+  { path: '/lecturer/student', name: 'Student Performance', element: StudentPerformance},
+  { path: '/lecturer/courses', name: 'View My Courses', element: ViewMyCourses},
+  { path: '/lecturer/enrolment', name: 'View Enrolment', element: ViewEnrolment},
+  { path: '/student/enrol', name: 'Enrol Course', element: EnrolCourse},
+  { path: '/student/course-list', name: 'My Courses', element: CourseList},
+  { path: '/student/history', name: 'Course History', element: CourseHistory},
+  { path: '/student/view-course', name: 'Schedule', element: ScheduleStu},
+  { path: '/student/grades', name: 'Grades', element: StudentGrades},
+  { path: '/login/', exact:true, name: 'Log In', element: Login },
+  { path: '/login/admin', name: 'Administrator Login', element: LoginAdmin},
+  { path: '/login/lecturer', name: 'Lecturer Login', element: LoginLecturer},
+  { path: '/login/student', name: 'Student Login', element: LoginStudent},
+  { path: '/home/whats-new', name: 'What\'s New', element: WhatsNew},
+  { path: '/home/our-faculties', name: 'Our Faculties', element: OurFaculties},
+  { path: '/home/all-courses', name: 'All Courses', element: AllCourses},
 
     {path: '/theme', name: 'Theme', element: Colors, exact: true},
     {path: '/theme/colors', name: 'Colors', element: Colors},

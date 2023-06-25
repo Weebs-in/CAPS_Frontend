@@ -5,7 +5,7 @@ import {
     CCard,
     CCardBody,
     CCardHeader,
-    CCol, CForm, CFormInput, CFormLabel, CFormSelect, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle,
+    CCol, CForm, CFormInput, CFormLabel, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle,
     CRow,
     CTable,
     CTableBody,
@@ -17,16 +17,11 @@ import {
 import config from 'src/config.js';
 import {getJWTFromLS} from "../../utils/jwtUtils";
 
-const CourseRecords = () => {
+const FacultyRecords = () => {
     // variables
     const [faculties, setFaculties] = useState([]);
-    const [courses, setCourses] = useState([]);
-    const [selectedCourseId, setSelectedCourseId] = useState(null);
-    const [code, setCode] = useState('');
+    const [selectedFacultyId, setSelectedFacultyId] = useState(null);
     const [name, setName] = useState('');
-    const [credits, setCredits] = useState('');
-    const [capacity, setCapacity] = useState('');
-    const [courseFacultyId, setCourseFacultyId] = useState({ facultyId: '' });
     // modal visibility
     const [visible, setVisible] = useState(false);
     const [visible_upd, setVisibleUpd] = useState(false);
@@ -36,26 +31,6 @@ const CourseRecords = () => {
     // toast
     const [toast, addToast] = useState(0)
     const toaster = useRef()
-
-
-    useEffect(() => {
-        fetchCourses();
-    }, []);
-
-    const fetchCourses = async () => {
-        fetch(config.getAllCourses, {
-            headers: {
-                'Authorization': 'Bearer ' + getJWTFromLS(),
-                'Content-Type': 'application/json'
-            },
-            method: 'GET'
-        }).then(response => response.json()).then(data => {
-            const coursesData = data.data;
-            setCourses(coursesData);
-        }).catch(error => {
-            console.error('Error fetching course data:', error);
-        });
-    };
 
     useEffect(() => {
         fetchFaculties();
@@ -85,40 +60,31 @@ const CourseRecords = () => {
             <CToastBody>Your operation is {toastMessage}</CToastBody>
         </CToast>
     )
-    // submit the new record to database
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
         const formDataObject = Object.fromEntries(formData.entries());
-        console.log(formDataObject);
         try {
-            const response = await fetch(config.createCourse, {
-                method: 'POST',
+            const params = new URLSearchParams();
+            params.append('facultyName', formDataObject["facultyName"].trim());
+            const response = await fetch(config.createFaculty + `?${params.toString()}`, {
                 headers: {
                     'Authorization': 'Bearer ' + getJWTFromLS(),
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    courseCode: formDataObject["courseCode"].trim(),
-                    courseName: formDataObject["courseName"].trim(),
-                    courseCredits: formDataObject["courseCredits"].trim(),
-                    courseCapacity: formDataObject["courseCapacity"].trim(),
-                    courseVacancy: formDataObject["courseCapacity"].trim(),
-                    faculty: {
-                        facultyId: formDataObject["faculty.facultyId"].trim()
-                    }
-                }),
+                method: 'POST'
             });
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Course created');
+                    console.log('Faculty created');
                     setVisible(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
                         toastMessage: config.TOAST_SUCCESS_MSG
                     }));
-                    await fetchCourses();
+                    await fetchFaculties();
                 } else {
                     console.error('Failed to create faculty: ', responseData.msg);
                     addToast(resultToast({
@@ -142,48 +108,25 @@ const CourseRecords = () => {
         }
     };
 
-    // set variable states when selecting course
-    const handleCourseSelection = (courseId) => {
-        console.log("selected id: " + courseId)
-        setSelectedCourseId(courseId);
-        const selectedCourse = courses.find((course) => course.courseId === courseId);
-        setCode(selectedCourse.courseCode);
-        setName(selectedCourse.courseName);
-        setCredits(selectedCourse.courseCredits);
-        setCapacity(selectedCourse.courseCapacity);
-        setCourseFacultyId(selectedCourse.faculty.facultyId);
+    const handleFacultySelection = (facultyId) => {
+        console.log("selected id: " + facultyId)
+        setSelectedFacultyId(facultyId);
+        const selectedFaculty = faculties.find((faculty) => faculty.facultyId === facultyId);
+        setName(selectedFaculty.facultyName);
     };
 
     const handleUpdate = async (event) => {
         event.preventDefault();
-        // to check JSON content in console
-        console.log('Request Body:', JSON.stringify({
-            courseId: selectedCourseId,
-            courseCode: code.trim(),
-            courseName: name.trim(),
-            courseCredits: credits.trim(),
-            courseCapacity: capacity.trim(),
-            faculty: {
-                facultyId: courseFacultyId.trim()
-            }
-        }));
         try {
-            const response = await fetch(config.updateCourse, {
-                method: 'PUT',
+            const params = new URLSearchParams();
+            params.append('facultyId', selectedFacultyId);
+            params.append('newFacultyName', name.trim());
+            const response = await fetch(config.updateFaculty + `?${params.toString()}`, {
                 headers: {
                     'Authorization': 'Bearer ' + getJWTFromLS(),
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    courseId: selectedCourseId,
-                    courseCode: code.trim(),
-                    courseName: name.trim(),
-                    courseCredits: credits.trim(),
-                    courseCapacity: capacity.trim(),
-                    faculty: {
-                        facultyId: courseFacultyId.trim()
-                    },
-                }),
+                method: 'PUT'
             });
             if (response.ok) {
                 const responseData = await response.json();
@@ -194,9 +137,9 @@ const CourseRecords = () => {
                         toastColor: config.TOAST_SUCCESS_COLOR,
                         toastMessage: config.TOAST_SUCCESS_MSG
                     }));
-                    await fetchCourses();
+                    await fetchFaculties();
                 } else {
-                    console.error('Failed to update course: ', responseData.msg);
+                    console.error('Failed to update faculty: ', responseData.msg);
                     addToast(resultToast({
                         toastColor: config.TOAST_FAILED_COLOR,
                         toastMessage: config.TOAST_FAILED_MSG
@@ -222,8 +165,8 @@ const CourseRecords = () => {
         event.preventDefault();
         try {
             const params = new URLSearchParams();
-            params.append('courseId', selectedCourseId);
-            const response = await fetch(config.deleteCourse + `?${params.toString()}`, {
+            params.append('facultyId', selectedFacultyId);
+            const response = await fetch(config.deleteFaculty + `?${params.toString()}`, {
                 headers: {
                     'Authorization': 'Bearer ' + getJWTFromLS(),
                     'Content-Type': 'application/json'
@@ -233,15 +176,15 @@ const CourseRecords = () => {
             if (response.ok) {
                 const responseData = await response.json();
                 if (responseData.code === config.REQUEST_SUCCESS) {
-                    console.log('Course deleted');
+                    console.log('Faculty deleted');
                     setVisibleDel(false);
                     addToast(resultToast({
                         toastColor: config.TOAST_SUCCESS_COLOR,
                         toastMessage: config.TOAST_SUCCESS_MSG
                     }));
-                    await fetchCourses();
+                    await fetchFaculties();
                 } else {
-                    console.error('Failed to delete course: ', responseData.msg);
+                    console.error('Failed to delete faculty: ', responseData.msg);
                     addToast(resultToast({
                         toastColor: config.TOAST_FAILED_COLOR,
                         toastMessage: config.TOAST_FAILED_MSG
@@ -268,11 +211,11 @@ const CourseRecords = () => {
             <CCol xs={12}>
                 <CCard className="mb-4">
                     <CCardHeader>
-                        <h3 style={{marginTop: 10 + 'px'}}>Course List</h3>
+                        <h3 style={{marginTop: 10 + 'px'}}>Faculty List</h3>
                     </CCardHeader>
                     <CCardBody>
                         <p className="text-medium-emphasis small">
-                            Course list within CAPS.
+                            Faculty list within CAPS.
                         </p>
                         <CButton color="success"
                                  style={{marginRight: 10 + 'px', marginBottom: 20 + 'px'}}
@@ -282,38 +225,28 @@ const CourseRecords = () => {
                         <CTable hover>
                             <CTableHead>
                                 <CTableRow>
-                                    <CTableHeaderCell scope="col">Id</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Course Code</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Course Name</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Credits</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Capacity</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Vacancy</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Faculty</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Faculty Id</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Faculty Name</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Options</CTableHeaderCell>
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {courses.map(item => (
-                                    <CTableRow key={item.courseId}>
-                                        <CTableHeaderCell scope="row">{item.courseId}</CTableHeaderCell>
-                                        <CTableDataCell>{item.courseCode}</CTableDataCell>
-                                        <CTableDataCell>{item.courseName}</CTableDataCell>
-                                        <CTableDataCell>{item.courseCredits}</CTableDataCell>
-                                        <CTableDataCell>{item.courseCapacity}</CTableDataCell>
-                                        <CTableDataCell>{item.courseVacancy}</CTableDataCell>
-                                        <CTableDataCell>{item.faculty.facultyName}</CTableDataCell>
+                                {faculties.map(item => (
+                                    <CTableRow key={item.facultyId}>
+                                        <CTableHeaderCell scope="row">{item.facultyId}</CTableHeaderCell>
+                                        <CTableDataCell>{item.facultyName}</CTableDataCell>
                                         <CTableDataCell>
                                             <CButton color="info"
                                                      style={{marginRight: 10 + 'px'}}
                                                      onClick={() => {
                                                          setVisibleUpd(!visible_upd);
-                                                         handleCourseSelection(item.courseId)
+                                                         handleFacultySelection(item.facultyId)
                                                      }}>Update</CButton>
                                             <CButton color="danger"
                                                      style={{marginRight: 10 + 'px'}}
                                                      onClick={() => {
                                                          setVisibleDel(!visible_Del);
-                                                         handleCourseSelection(item.courseId)
+                                                         handleFacultySelection(item.facultyId)
                                                      }}>Delete</CButton>
                                         </CTableDataCell>
                                     </CTableRow>
@@ -324,45 +257,14 @@ const CourseRecords = () => {
                 </CCard>
                 <CModal alignment="center" size="lg" visible={visible} onClose={() => setVisible(false)}>
                     <CModalHeader>
-                        <CModalTitle>Create a course</CModalTitle>
+                        <CModalTitle>Create a faculty</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
                         <CForm ref={formRef}>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Code</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty Name</CFormLabel>
                                 <CCol sm={10}>
-                                    <CFormInput type="text" name="courseCode"/>
-                                </CCol>
-                            </CRow>
-                            <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Name</CFormLabel>
-                                <CCol sm={10}>
-                                    <CFormInput type="text" name="courseName"/>
-                                </CCol>
-                            </CRow>
-                            <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Credits</CFormLabel>
-                                <CCol sm={10}>
-                                    <CFormInput type="text" name="courseCredits"/>
-                                </CCol>
-                            </CRow>
-                            <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Capacity</CFormLabel>
-                                <CCol sm={10}>
-                                    <CFormInput type="text" name="courseCapacity"/>
-                                </CCol>
-                            </CRow>
-                            <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Faculty</CFormLabel>
-                                <CCol sm={10}>
-                                    <CFormSelect name="faculty.facultyId">
-                                        <option value="">Select Faculty</option>
-                                        {faculties.map(faculty => (
-                                            <option key={faculty.facultyId} value={faculty.facultyId}>
-                                                {faculty.facultyName}
-                                            </option>
-                                        ))}
-                                    </CFormSelect>
+                                    <CFormInput type="text" name="facultyName"/>
                                 </CCol>
                             </CRow>
                         </CForm>
@@ -376,57 +278,16 @@ const CourseRecords = () => {
                 </CModal>
                 <CModal alignment="center" size="lg" visible={visible_upd} onClose={() => setVisibleUpd(false)}>
                     <CModalHeader>
-                        <CModalTitle>Update a course</CModalTitle>
+                        <CModalTitle>Update a faculty</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
                         <CForm>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Code</CFormLabel>
-                                <CCol sm={10}>
-                                    <CFormInput type="text"
-                                                value={code}
-                                                onChange={(event) => setCode(event.target.value)}/>
-                                </CCol>
-                            </CRow>
-                            <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
                                                 value={name}
                                                 onChange={(event) => setName(event.target.value)}/>
-                                </CCol>
-                            </CRow>
-                            <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Credits</CFormLabel>
-                                <CCol sm={10}>
-                                    <CFormInput type="text"
-                                                value={credits}
-                                                onChange={(event) => setCredits(event.target.value)}/>
-                                </CCol>
-                            </CRow>
-                            <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Capacity</CFormLabel>
-                                <CCol sm={10}>
-                                    <CFormInput type="text"
-                                                value={capacity}
-                                                onChange={(event) => setCapacity(event.target.value)}/>
-                                </CCol>
-                            </CRow>
-                            <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Faculty</CFormLabel>
-                                <CCol sm={10}>
-                                    <CFormSelect
-                                        name="courseFacultyId"
-                                        value={courseFacultyId}
-                                        onChange={(event) => setCourseFacultyId(event.target.value)}
-                                    >
-                                        <option value="">Select Faculty</option>
-                                        {faculties.map(faculty => (
-                                            <option key={faculty.facultyId} value={faculty.facultyId}>
-                                                {faculty.facultyName}
-                                            </option>
-                                        ))}
-                                    </CFormSelect>
                                 </CCol>
                             </CRow>
                         </CForm>
@@ -440,7 +301,7 @@ const CourseRecords = () => {
                 </CModal>
                 <CModal alignment="center" size="lg" visible={visible_Del} onClose={() => setVisibleDel(false)}>
                     <CModalHeader>
-                        <CModalTitle>Delete a course</CModalTitle>
+                        <CModalTitle>Delete a faculty</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
                         <CAlert color="danger">
@@ -448,15 +309,15 @@ const CourseRecords = () => {
                         </CAlert>
                         <CForm>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Id</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty Id</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
-                                                value={selectedCourseId}
+                                                value={selectedFacultyId}
                                                 disabled={true}/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
-                                <CFormLabel className="col-sm-2 col-form-label">Course Name</CFormLabel>
+                                <CFormLabel className="col-sm-2 col-form-label">Faculty Name</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormInput type="text"
                                                 value={name}
@@ -478,4 +339,4 @@ const CourseRecords = () => {
     )
 }
 
-export default CourseRecords
+export default FacultyRecords

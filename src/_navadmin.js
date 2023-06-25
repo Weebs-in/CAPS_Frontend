@@ -6,16 +6,22 @@ import {
   cilChartPie,
   cilCursor,
   cilDescription,
-  cilDrop,
+  cilDrop, cilHome,
   cilNotes,
   cilPencil,
-  cilPuzzle,
+  cilPuzzle, cilSchool,
   cilSpeedometer,
   cilStar,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _navadmin = [
+  {
+    component: CNavItem,
+    name: 'Home',
+    to: '/home',
+    icon: <CIcon icon={cilHome} customClassName="nav-icon"/>,
+  },
   {
     component: CNavTitle,
     name: 'Record Management',
@@ -29,12 +35,18 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Course Records',
-        to: '/admin/courserec',
+        to: '/admin/course-records',
       },
       {
         component: CNavItem,
         name: 'Enrolment',
         to: '/admin/course-enrolment',
+      },
+      {
+        component: CNavItem,
+        name: 'Kick Student From Course',
+        to: '/admin/kick-student',
+        // icon: <CIcon icon={cilSchool} customClassName="nav-icon"/>,
       }
     ]
   },
@@ -47,7 +59,7 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Lecturer Records',
-        to: '/admin/lecturerrecords',
+        to: '/admin/lecturer-records',
       },
     ],
   },
@@ -59,7 +71,19 @@ const _navadmin = [
       {
         component: CNavItem,
         name: 'Student Records',
-        to: '/admin/studentrecords',
+        to: '/admin/student-records',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Faculties',
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Faculty Records',
+        to: '/admin/faculty-records',
       },
     ],
   },

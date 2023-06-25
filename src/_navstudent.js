@@ -31,12 +31,12 @@ const _navstudent = [
         to: '/student/enroll-course',
         icon: <CIcon icon={cilSchool} customClassName="nav-icon"/>,
     },
-    {
-        component: CNavItem,
-        name: 'Kick Student From Course',
-        to: '/admin/kick-student',
-        icon: <CIcon icon={cilSchool} customClassName="nav-icon"/>,
-    }
+    // {
+    //     component: CNavItem,
+    //     name: 'Kick Student From Course',
+    //     to: '/admin/kick-student',
+    //     icon: <CIcon icon={cilSchool} customClassName="nav-icon"/>,
+    // }
 ]
 
 export default _navstudent
