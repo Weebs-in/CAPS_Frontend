@@ -82,7 +82,7 @@ const CourseRecords = () => {
             <CToastBody>Your operation is {toastMessage}</CToastBody>
         </CToast>
     )
-
+    // submit the new record to database
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
