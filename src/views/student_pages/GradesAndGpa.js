@@ -31,6 +31,8 @@ const GradesAndGpa = () => {
     const [courseRecords, setCourseRecords] = useState([]);
     const [courseAllRecords, setCourseAllRecords] = useState([]);
     const [courseDetails, setCourseDetails] = useState([]);
+    const [courseLecturers, setCourseLecturers] = useState([]);
+    const [courseSchedules, setCourseSchedules] = useState([]);
     const [facultyName, setFacultyName] = useState([]);
     const [gpa, setGpa] = useState([]);
     // modal visibility
@@ -74,6 +76,26 @@ const GradesAndGpa = () => {
         });
         return statusCounts;
     }
+
+    const fetchCourseLecturerSchedule = async (courseId) => {
+        const params = new URLSearchParams();
+        params.append('courseId', courseId);
+        await fetch(config.getCourseLecturerSchedule + `?${params.toString()}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
+        }).then(response => response.json()).then(data => {
+            const courseLecturersData = data.data.lecturers;
+            const courseSchedulesData = data.data.schedules;
+            console.log(courseLecturersData);
+            console.log(courseSchedulesData);
+            setCourseLecturers(courseLecturersData);
+            setCourseSchedules(courseSchedulesData);
+        }).catch(error => {
+            console.error('Error fetching cls data:', error);
+        });
+    };
 
     const fetchGradeRecords = async () => {
         const params = new URLSearchParams();
@@ -164,7 +186,30 @@ const GradesAndGpa = () => {
     const handleCourseDetails = async (courseId) => {
         console.log("selected id: " + courseId)
         await fetchCourseDetails(courseId);
+        await fetchCourseLecturerSchedule(courseId);
     };
+
+    const dowToString = (dow) => {
+        let res = "-";
+        switch (dow) {
+            case 1:
+                res = "Monday";
+                break;
+            case 2:
+                res = "Tuesday";
+                break;
+            case 3:
+                res = "Wednesday";
+                break;
+            case 4:
+                res = "Thursday";
+                break;
+            case 5:
+                res = "Friday";
+                break;
+        }
+        return res;
+    }
 
     return (
         <CRow>
@@ -220,38 +265,101 @@ const GradesAndGpa = () => {
                     <CModalTitle>Completed Course details</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                    <CForm>
-                        <CRow className="mb-3">
-                            <CFormLabel className="col-sm-5 col-form-label">Course Code</CFormLabel>
-                            <CCol sm={5} className="mb-3">
-                                <CFormInput type="text" value={courseDetails.courseCode} readOnly/>
-                            </CCol>
-                            <CFormLabel className="col-sm-5 col-form-label">Course Name</CFormLabel>
-                            <CCol sm={5} className="mb-3">
-                                <CFormInput type="text" value={courseDetails.courseName} readOnly/>
-                            </CCol>
-                            <CFormLabel className="col-sm-5 col-form-label">Course Faculty Name</CFormLabel>
-                            <CCol sm={5} className="mb-3">
-                                <CFormInput type="text" value={facultyName} readOnly/>
-                            </CCol>
-                            <CFormLabel className="col-sm-5 col-form-label">Course Credits</CFormLabel>
-                            <CCol sm={5} className="mb-3">
-                                <CFormInput type="text" value={courseDetails.courseCredits} readOnly/>
-                            </CCol>
-                            <CFormLabel className="col-sm-5 col-form-label">Course Capacity</CFormLabel>
-                            <CCol sm={5} className="mb-3">
-                                <CFormInput type="text" value={courseDetails.courseCapacity} readOnly/>
-                            </CCol>
-                            <CFormLabel className="col-sm-5 col-form-label">Course Enrollment Status</CFormLabel>
-                            <CCol sm={5} className="mb-3">
-                                <CFormInput type="text" value={courseDetails.courseEnrollmentStatus} readOnly/>
-                            </CCol>
-                            <CFormLabel className="col-sm-5 col-form-label">Course Status</CFormLabel>
-                            <CCol sm={5} className="mb-3">
-                                <CFormInput type="text" value={courseDetails.courseStatus} readOnly/>
-                            </CCol>
-                        </CRow>
-                    </CForm>
+                    <CCard className="mb-4">
+                        <CCardHeader>
+                            <h3 style={{marginTop: 10 + 'px'}}>Course Info</h3>
+                        </CCardHeader>
+                        <CCardBody>
+                            <CForm>
+                                <CRow className="mb-3">
+                                    <CFormLabel className="col-sm-5 col-form-label">Course Code</CFormLabel>
+                                    <CCol sm={5} className="mb-3">
+                                        <CFormInput type="text" value={courseDetails.courseCode} readOnly/>
+                                    </CCol>
+                                    <CFormLabel className="col-sm-5 col-form-label">Course Name</CFormLabel>
+                                    <CCol sm={5} className="mb-3">
+                                        <CFormInput type="text" value={courseDetails.courseName} readOnly/>
+                                    </CCol>
+                                    <CFormLabel className="col-sm-5 col-form-label">Course Faculty Name</CFormLabel>
+                                    <CCol sm={5} className="mb-3">
+                                        <CFormInput type="text" value={facultyName} readOnly/>
+                                    </CCol>
+                                    <CFormLabel className="col-sm-5 col-form-label">Course Credits</CFormLabel>
+                                    <CCol sm={5} className="mb-3">
+                                        <CFormInput type="text" value={courseDetails.courseCredits} readOnly/>
+                                    </CCol>
+                                    <CFormLabel className="col-sm-5 col-form-label">Course Capacity</CFormLabel>
+                                    <CCol sm={5} className="mb-3">
+                                        <CFormInput type="text" value={courseDetails.courseCapacity} readOnly/>
+                                    </CCol>
+                                    <CFormLabel className="col-sm-5 col-form-label">Course Enrollment
+                                        Status</CFormLabel>
+                                    <CCol sm={5} className="mb-3">
+                                        <CFormInput type="text" value={courseDetails.courseEnrollmentStatus} readOnly/>
+                                    </CCol>
+                                    <CFormLabel className="col-sm-5 col-form-label">Course Status</CFormLabel>
+                                    <CCol sm={5} className="mb-3">
+                                        <CFormInput type="text" value={courseDetails.courseStatus} readOnly/>
+                                    </CCol>
+                                </CRow>
+                            </CForm>
+                        </CCardBody>
+                    </CCard>
+                    <CCard className="mb-4">
+                        <CCardHeader>
+                            <h3 style={{marginTop: 10 + 'px'}}>Lecturer Info</h3>
+                        </CCardHeader>
+                        <CCardBody>
+                            <CTable hover>
+                                <CTableHead>
+                                    <CTableRow>
+                                        <CTableHeaderCell scope="col">Lecturer Name</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
+                                    </CTableRow>
+                                </CTableHead>
+                                <CTableBody>
+                                    {courseLecturers.map(item => (
+                                        <CTableRow key={item.lecturerId}>
+                                            <CTableHeaderCell>{item.firstMidName + " " + item.lastName}</CTableHeaderCell>
+                                            <CTableDataCell>{item.gender}</CTableDataCell>
+                                        </CTableRow>
+                                    ))}
+                                </CTableBody>
+                            </CTable>
+                        </CCardBody>
+                    </CCard>
+                    <CCard className="mb-4">
+                        <CCardHeader>
+                            <h3 style={{marginTop: 10 + 'px'}}>Schedule Info</h3>
+                        </CCardHeader>
+                        <CCardBody>
+                            {
+                                courseSchedules.length === 0 ? (
+                                    <p>No schedules yet</p>
+                                ) : (
+                                    <CTable hover>
+                                        <CTableHead>
+                                            <CTableRow>
+                                                <CTableHeaderCell scope="col">Schedule Day of
+                                                    Week</CTableHeaderCell>
+                                                <CTableHeaderCell scope="col">Schedule Start Time</CTableHeaderCell>
+                                                <CTableHeaderCell scope="col">Schedule End Time</CTableHeaderCell>
+                                            </CTableRow>
+                                        </CTableHead>
+                                        <CTableBody>
+                                            {courseSchedules.map(item => (
+                                                <CTableRow key={item.scheduleId}>
+                                                    <CTableHeaderCell>{dowToString(item.scheduleDayOfWeek)}</CTableHeaderCell>
+                                                    <CTableDataCell>{item.scheduleStartTime.substr(0, 5)}</CTableDataCell>
+                                                    <CTableDataCell>{item.scheduleEndTime.substr(0, 5)}</CTableDataCell>
+                                                </CTableRow>
+                                            ))}
+                                        </CTableBody>
+                                    </CTable>
+                                )
+                            }
+                        </CCardBody>
+                    </CCard>
                 </CModalBody>
                 <CModalFooter>
                     <CButton color="secondary" onClick={() => setVisibleDetail(false)}>

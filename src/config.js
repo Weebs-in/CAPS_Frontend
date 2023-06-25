@@ -27,6 +27,9 @@ const config = {
     getStudentsByCourseId: '/course/getStudentsByCourseId',
     gradeStudentForCourse: '/course_lecturer/gradeStudentForCourse',
     getStudentPerformance: '/lecturer/getStudentPerformanceByLecturerId',
+    lecturerEnrollCourse: '/course_lecturer/lecturerEnrollCourse',
+    // course
+    getCourseLecturerSchedule: '/course/getCourseLecturerSchedule',
 };
 
 export default config;

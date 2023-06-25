@@ -23,6 +23,8 @@ const ViewCoursesDetails = () => {
     const [courseDetails, setCourseDetails] = useState([]);
     const [courseStudents, setCourseStudents] = useState([]);
     const [facultyName, setFacultyName] = useState([]);
+    const [courseLecturers, setCourseLecturers] = useState([]);
+    const [courseSchedules, setCourseSchedules] = useState([]);
     // form
     const [selectedCourseId, setSelectedCourseId] = useState([]);
     const [selectedStudentId, setSelectedStudentId] = useState([]);
@@ -67,12 +69,35 @@ const ViewCoursesDetails = () => {
             } else if (courseDetailsData.courseEnrollmentStatus === -1) {
                 courseDetailsData.courseEnrollmentStatus = "Not Enrolling";
             }
+            fetchCourseLecturerSchedule(courseId);
             setCourseDetails(courseDetailsData);
             setFacultyName(courseDetailsData.faculty.facultyName)
         }).catch(error => {
             console.error('Error fetching course detail data:', error);
         });
     };
+
+    const dowToString = (dow) => {
+        let res = "-";
+        switch (dow) {
+            case 1:
+                res = "Monday";
+                break;
+            case 2:
+                res = "Tuesday";
+                break;
+            case 3:
+                res = "Wednesday";
+                break;
+            case 4:
+                res = "Thursday";
+                break;
+            case 5:
+                res = "Friday";
+                break;
+        }
+        return res;
+    }
 
     const fetchCourseRecords = async () => {
         const params = new URLSearchParams();
@@ -108,6 +133,26 @@ const ViewCoursesDetails = () => {
             setCourseStudents(courseStudentsData);
         }).catch(error => {
             console.error('Error fetching course student data:', error);
+        });
+    };
+
+    const fetchCourseLecturerSchedule = async (courseId) => {
+        const params = new URLSearchParams();
+        params.append('courseId', courseId);
+        await fetch(config.getCourseLecturerSchedule + `?${params.toString()}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
+        }).then(response => response.json()).then(data => {
+            const courseLecturersData = data.data.lecturers;
+            const courseSchedulesData = data.data.schedules;
+            console.log(courseLecturersData);
+            console.log(courseSchedulesData);
+            setCourseLecturers(courseLecturersData);
+            setCourseSchedules(courseSchedulesData);
+        }).catch(error => {
+            console.error('Error fetching cls data:', error);
         });
     };
 
@@ -238,6 +283,65 @@ const ViewCoursesDetails = () => {
                                 </CCol>
                             </CRow>
                         </CForm>
+                    </CCardBody>
+                </CCard>
+            </CCol>
+            <CCol xs={6}>
+                <CCard className="mb-4">
+                    <CCardHeader>
+                        <h3 style={{marginTop: 10 + 'px'}}>Lecturer Info</h3>
+                    </CCardHeader>
+                    <CCardBody>
+                        <CTable hover>
+                            <CTableHead>
+                                <CTableRow>
+                                    <CTableHeaderCell scope="col">Lecturer Name</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
+                                </CTableRow>
+                            </CTableHead>
+                            <CTableBody>
+                                {courseLecturers.map(item => (
+                                    <CTableRow key={item.lecturerId}>
+                                        <CTableHeaderCell>{item.firstMidName + " " + item.lastName}</CTableHeaderCell>
+                                        <CTableDataCell>{item.gender}</CTableDataCell>
+                                    </CTableRow>
+                                ))}
+                            </CTableBody>
+                        </CTable>
+                    </CCardBody>
+                </CCard>
+            </CCol>
+            <CCol xs={6}>
+                <CCard className="mb-4">
+                    <CCardHeader>
+                        <h3 style={{marginTop: 10 + 'px'}}>Schedule Info</h3>
+                    </CCardHeader>
+                    <CCardBody>
+                        {
+                            courseSchedules.length === 0 ? (
+                                <p>No schedules yet</p>
+                            ) : (
+                                <CTable hover>
+                                    <CTableHead>
+                                        <CTableRow>
+                                            <CTableHeaderCell scope="col">Schedule Day of
+                                                Week</CTableHeaderCell>
+                                            <CTableHeaderCell scope="col">Schedule Start Time</CTableHeaderCell>
+                                            <CTableHeaderCell scope="col">Schedule End Time</CTableHeaderCell>
+                                        </CTableRow>
+                                    </CTableHead>
+                                    <CTableBody>
+                                        {courseSchedules.map(item => (
+                                            <CTableRow key={item.scheduleId}>
+                                                <CTableHeaderCell>{dowToString(item.scheduleDayOfWeek)}</CTableHeaderCell>
+                                                <CTableDataCell>{item.scheduleStartTime.substr(0, 5)}</CTableDataCell>
+                                                <CTableDataCell>{item.scheduleEndTime.substr(0, 5)}</CTableDataCell>
+                                            </CTableRow>
+                                        ))}
+                                    </CTableBody>
+                                </CTable>
+                            )
+                        }
                     </CCardBody>
                 </CCard>
             </CCol>
