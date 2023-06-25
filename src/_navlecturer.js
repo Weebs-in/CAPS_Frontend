@@ -1,61 +1,38 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDescription,
-  cilDrop,
-  cilNotes,
-  cilPencil,
-  cilPuzzle,
-  cilSpeedometer,
-  cilStar,
+    cilBarChart, cilHome,
+    cilListRich,
+    cilSchool,
+
 } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import {CNavItem} from '@coreui/react'
 
 const _navlecturer = [
-  {
-    component: CNavTitle,
-    name: 'Course Centre',
-  },
-  {
-    component: CNavGroup,
-    name: 'Courses',
-    to: '/admin',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-    items: [
-      {
+    {
         component: CNavItem,
-        name: 'View My Courses',
-        to: '/lecturer/courses',
-      },
-      {
+        name: 'Home',
+        to: '/home',
+        icon: <CIcon icon={cilHome} customClassName="nav-icon"/>,
+    },
+    {
         component: CNavItem,
-        name: 'Course Enrolment',
-        to: '/lecturer/enrolment',
-      },
-    ]
-  },
-  {
-    component: CNavGroup,
-    name: 'Grades',
-    to: '/buttons',
-    icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
-    items: [
-      {
+        name: 'View Courses Taught',
+        to: '/lecturer/view-courses-taught',
+        icon: <CIcon icon={cilListRich} customClassName="nav-icon"/>,
+    },
+    {
         component: CNavItem,
-        name: 'Grade Course',
-        to: '/lecturer/gradecourse',
-      },
-      {
+        name: 'View Student Performance',
+        to: '/lecturer/view-student-performance',
+        icon: <CIcon icon={cilBarChart} customClassName="nav-icon"/>,
+    },
+    {
         component: CNavItem,
-        name: 'Student Performance',
-        to: '/lecturer/student',
-      },
-    ],
-  },
+        name: 'Lecturer Enroll Course',
+        to: '/lecturer/lecturer-enroll-course',
+        icon: <CIcon icon={cilSchool} customClassName="nav-icon"/>,
+    },
 ]
 
 export default _navlecturer

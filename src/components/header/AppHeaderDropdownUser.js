@@ -1,7 +1,6 @@
 import React from 'react'
 import {
-  CAvatar,
-  CBadge,
+  CButton,
   CDropdown,
   CDropdownDivider,
   CDropdownHeader,
@@ -11,39 +10,30 @@ import {
   CNavItem,
 } from '@coreui/react'
 import {
-  cilBell,
-  cilCommentSquare,
-  cilEnvelopeOpen,
-  cilFile,
   cilLockLocked,
-  cilSettings,
-  cilTask,
-  cilUser,
 } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import {clearJWTFromLS, getUserNbrFromLS} from "../../utils/jwtUtils";
 
 const AppHeaderDropdown = () => {
+
+  const handleLogout = async () => {
+    await clearJWTFromLS();
+    console.log("login info cleared")
+    window.location.href = "/#/logout"
+  }
+
+  // const
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CNavItem>Username</CNavItem>
+        <CNavItem>{getUserNbrFromLS()}</CNavItem>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
-        <CDropdownItem href="#">
-          <CIcon icon={cilUser} className="me-2" />
-          Email
-        </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilSettings} className="me-2" />
-          Password
-        </CDropdownItem>
+        <CDropdownHeader className="bg-light fw-semibold py-2">Logout</CDropdownHeader>
         <CDropdownDivider />
-        <CDropdownItem href="#">
-          <CIcon icon={cilLockLocked} className="me-2" />
-          Logout
+        <CDropdownItem>
+          <CButton icon={cilLockLocked} className="me-2" onClick={handleLogout}>Logout</CButton>
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

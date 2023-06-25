@@ -16,7 +16,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
-function LoginLecturer() {
+function LoginAdmin() {
     // const [username, setUsername] = useState("");
     // const [password, setPassword] = useState("");
     // const [loginStatus, setLoginStatus] = useState("");
@@ -45,8 +45,8 @@ function LoginLecturer() {
                             <CCard className="p-4" style={{ minWidth: '280px', maxWidth: '400px' }}>
                                 <CCardBody>
                                     <CForm>
-                                        <h1>Lecturers</h1>
-                                        <p className="text-medium-emphasis">Please ensure you are using the correct login</p>
+                                        <h1>Log In</h1>
+                                        <p className="text-medium-emphasis">Please ensure Caps Lock is turned off</p>
                                         <CInputGroup className="mb-3">
                                             <CInputGroupText>
                                                 <CIcon icon={cilUser} />
@@ -89,4 +89,4 @@ function LoginLecturer() {
     )
 }
 
-export default LoginLecturer
+export default LoginAdmin

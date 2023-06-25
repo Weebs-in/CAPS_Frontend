@@ -1,15 +1,17 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
+  cilAccountLogout, cilAddressBook,
+  cilBarChart,
   cilBell,
   cilCalculator,
   cilChartPie,
   cilCursor,
   cilDescription,
-  cilDrop,
+  cilDrop, cilListRich, cilLockLocked, cilLockUnlocked,
   cilNotes,
   cilPencil,
-  cilPuzzle,
+  cilPuzzle, cilSchool,
   cilSpeedometer,
   cilStar,
 } from '@coreui/icons'
@@ -25,6 +27,30 @@ const _nav = [
       color: 'info',
       text: 'NEW',
     },
+  },
+  {
+    component: CNavItem,
+    name: 'Login',
+    to: '/login',
+    icon: <CIcon icon={cilLockUnlocked} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Logout',
+    to: '/logout',
+    icon: <CIcon icon={cilAccountLogout} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Register',
+    to: '/register',
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Error 404',
+    to: '/404',
+    icon: <CIcon icon={cilLockLocked} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,
@@ -45,6 +71,42 @@ const _nav = [
   {
     component: CNavTitle,
     name: 'Components',
+  },
+  {
+    component: CNavItem,
+    name: 'Grades and GPA',
+    to: '/student/grades-gpa',
+    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'View Courses',
+    to: '/student/view-courses',
+    icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Enroll for a Course',
+    to: '/student/enroll-course',
+    icon: <CIcon icon={cilSchool} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'View Courses Taught',
+    to: '/lecturer/view-courses-taught',
+    icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'View Student Performance',
+    to: '/lecturer/view-student-performance',
+    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Lecturer Enroll Course',
+    to: '/lecturer/lecturer-enroll-course',
+    icon: <CIcon icon={cilSchool} customClassName="nav-icon" />,
   },
   {
     component: CNavGroup,

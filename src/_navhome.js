@@ -1,3 +1,4 @@
+
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
@@ -29,19 +30,19 @@ const _navhome = [
             {
                 component: CNavItem,
                 name: 'What\'s New',
-                to: '/home/whatsnew',
+                to: '/home/whats-new',
             },
             {
                 component: CNavItem,
                 name: 'Our Faculties',
-                to: '/home/ourfaculties',
+                to: '/home/our-faculties',
             },
         ]
     },
     {
         component: CNavItem,
         name: 'All Courses',
-        to: '/home/allcourses',
+        to: '/home/all-courses',
         icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
     },
 ]
