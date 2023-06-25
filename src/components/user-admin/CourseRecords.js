@@ -26,6 +26,7 @@ const CourseRecords = () => {
     const [name, setName] = useState('');
     const [credits, setCredits] = useState('');
     const [capacity, setCapacity] = useState('');
+    const [vacancy, setVacancy] = useState('');
     const [courseFacultyId, setCourseFacultyId] = useState({ facultyId: '' });
     // modal visibility
     const [visible, setVisible] = useState(false);
@@ -101,11 +102,11 @@ const CourseRecords = () => {
                 body: JSON.stringify({
                     courseCode: formDataObject["courseCode"].trim(),
                     courseName: formDataObject["courseName"].trim(),
-                    courseCredits: formDataObject["courseCredits"].trim(),
-                    courseCapacity: formDataObject["courseCapacity"].trim(),
-                    courseVacancy: formDataObject["courseCapacity"].trim(),
+                    courseCredits: formDataObject["courseCredits"],
+                    courseCapacity: formDataObject["courseCapacity"],
+                    courseVacancy: formDataObject["courseCapacity"],
                     faculty: {
-                        facultyId: formDataObject["faculty.facultyId"].trim()
+                        facultyId: formDataObject["faculty.facultyId"]
                     }
                 }),
             });
@@ -161,10 +162,11 @@ const CourseRecords = () => {
             courseId: selectedCourseId,
             courseCode: code.trim(),
             courseName: name.trim(),
-            courseCredits: credits.trim(),
-            courseCapacity: capacity.trim(),
+            courseCredits: credits,
+            courseCapacity: capacity,
+            courseVacancy: vacancy,
             faculty: {
-                facultyId: courseFacultyId.trim()
+                facultyId: courseFacultyId
             }
         }));
         try {
@@ -178,10 +180,11 @@ const CourseRecords = () => {
                     courseId: selectedCourseId,
                     courseCode: code.trim(),
                     courseName: name.trim(),
-                    courseCredits: credits.trim(),
-                    courseCapacity: capacity.trim(),
+                    courseCredits: credits,
+                    courseCapacity: capacity,
+                    courseVacancy: vacancy,
                     faculty: {
-                        facultyId: courseFacultyId.trim()
+                        facultyId: courseFacultyId
                     },
                 }),
             });
@@ -410,6 +413,14 @@ const CourseRecords = () => {
                                     <CFormInput type="text"
                                                 value={capacity}
                                                 onChange={(event) => setCapacity(event.target.value)}/>
+                                </CCol>
+                            </CRow>
+                            <CRow className="mb-3">
+                                <CFormLabel className="col-sm-2 col-form-label">Course Vacancy</CFormLabel>
+                                <CCol sm={10}>
+                                    <CFormInput type="text"
+                                                value={vacancy}
+                                                onChange={(event) => setVacancy(event.target.value)}/>
                                 </CCol>
                             </CRow>
                             <CRow className="mb-3">
