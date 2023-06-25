@@ -15,19 +15,22 @@ import {
     CTableRow, CToast, CToastBody, CToaster, CToastHeader,
 } from '@coreui/react'
 import config from 'src/config.js';
+import select from "../../views/forms/select/Select";
 
 const CourseRecords = () => {
     // variables
     const [faculties, setFaculties] = useState([]);
     const [courses, setCourses] = useState([]);
     const [schedules, setSchedules] = useState([]);
+    const [courseLecturers, setCourseLecturers] = useState([]);
+    const [courseSchedules, setCourseSchedules] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
-    const filteredSchedules = schedules.filter(item => item.courseId === selectedCourseId);
     const [selectedCourseScheduleId, setSelectedCourseScheduleId] = useState(null);
     const [code, setCode] = useState('');
     const [name, setName] = useState('');
     const [credits, setCredits] = useState('');
     const [capacity, setCapacity] = useState('');
+    const [scheduleId, setScheduleId] = useState('');
     const [courseFacultyId, setCourseFacultyId] = useState({ facultyId: '' });
     const [courseScheduleId, setCourseScheduleId] = useState({scheduleId:''});
     const [day, setDay] = useState('');
@@ -95,6 +98,30 @@ const CourseRecords = () => {
         }).then(response => response.json()).then(data => {
             const scheduleData = data.data;
             setSchedules(scheduleData);
+        }).catch(error => {
+            console.error('Error fetching course data:', error);
+        });
+    };
+
+    useEffect(() => {
+        fetchCourseLecturerSchedule(courseId);
+    }, []);
+
+    const fetchCourseLecturerSchedule = async (courseId) => {
+        const params = new URLSearchParams();
+        params.append('courseId', courseId);
+        await fetch(config.getCourseLecturerSchedule + `?${params.toString()}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
+        }).then(response => response.json()).then(data => {
+            const courseLecturersData = data.data.lecturers;
+            const courseSchedulesData = data.data.schedules;
+            console.log(courseLecturersData);
+            console.log(courseSchedulesData);
+            setCourseLecturers(courseLecturersData);
+            setCourseSchedules(courseSchedulesData);
         }).catch(error => {
             console.error('Error fetching course data:', error);
         });
@@ -174,6 +201,18 @@ const CourseRecords = () => {
         setCourseFacultyId(selectedCourse.faculty.facultyId);
     };
 
+    const handleCourseScheduleSelection = (courseScheduleId) => {
+        console.log("selected id: " + courseScheduleIdId)
+        setSelectedCourseScheduleId(courseScheduleId);
+        // const selectedCourseSchedule = courseSchedules.find((courseSchedule) => courseSchedule.courseScheduleId === courseScheduleId);
+        // setCode(selectedCourse.courseCode);
+        // setName(selectedCourse.courseName);
+        // setCredits(selectedCourse.courseCredits);
+        // setCapacity(selectedCourse.courseCapacity);
+        // setCourseFacultyId(selectedCourse.faculty.facultyId);
+    };
+
+
     const handleUpdate = async (event) => {
         event.preventDefault();
         // to check JSON content in console
@@ -181,8 +220,8 @@ const CourseRecords = () => {
             courseId: selectedCourseId,
             courseCode: code.trim(),
             courseName: name.trim(),
-            courseCredits: credits.trim(),
-            courseCapacity: capacity.trim(),
+            courseCredits: credits,
+            courseCapacity: capacity,
             faculty: {
                 facultyId: courseFacultyId.trim()
             }
@@ -197,8 +236,8 @@ const CourseRecords = () => {
                     courseId: selectedCourseId,
                     courseCode: code.trim(),
                     courseName: name.trim(),
-                    courseCredits: credits.trim(),
-                    courseCapacity: capacity.trim(),
+                    courseCredits: credits,
+                    courseCapacity: capacity,
                     faculty: {
                         facultyId: courseFacultyId.trim()
                     },
@@ -282,6 +321,7 @@ const CourseRecords = () => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
         const formDataObject = Object.fromEntries(formData.entries());
+        console.log(selectedCourseId);
         console.log(formDataObject);
         try {
             const response = await fetch(config.createScheduleByCourse, {
@@ -290,8 +330,8 @@ const CourseRecords = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    scheduleId: formDataObject["scheduleId"].trim(),
-                    courseId: formDataObject["courseId"].trim(),
+                    scheduleId: scheduleId,
+                    courseId: selectedCourseId,
                 }),
             });
             if (response.ok) {
@@ -332,7 +372,7 @@ const CourseRecords = () => {
         event.preventDefault();
         try {
             const params = new URLSearchParams();
-            params.append('courseId', selectedCourseScheduleId);
+            params.append('courseScheduleId', selectedCourseScheduleId);
             const response = await fetch(config.removeScheduleByCourse + `?${params.toString()}`, {
                 method: 'DELETE'
             });
@@ -434,6 +474,8 @@ const CourseRecords = () => {
                         </CTable>
                     </CCardBody>
                 </CCard>
+
+                {/*Modal for creating course*/}
                 <CModal alignment="center" size="lg" visible={visible} onClose={() => setVisible(false)}>
                     <CModalHeader>
                         <CModalTitle>Create a course</CModalTitle>
@@ -485,6 +527,8 @@ const CourseRecords = () => {
                         </CButton>
                         <CButton color="success" onClick={handleSubmit}>Save</CButton>
                     </CModalFooter>
+
+                {/* Modal for Schedule - View, Add and Delete   */}
                 </CModal>
                 <CModal alignment="center" size="lg" visible={visible_sch} onClose={() => setVisibleSch(false)}>
                     <CModalHeader>
@@ -504,8 +548,8 @@ const CourseRecords = () => {
                                     </CTableRow>
                                 </CTableHead>
                                 <CTableBody>
-                                    {filteredSchedules.map(item => (
-                                        <CTableRow key={item.courseId}>
+                                    {courseSchedules.map(item => (
+                                        <CTableRow key={item.courseScheduleId}>
                                             <CTableHeaderCell scope="row">{item.courseScheduleId}</CTableHeaderCell>
                                             <CTableDataCell>{item.scheduleDayOfWeek}</CTableDataCell>
                                             <CTableDataCell>{item.scheduleStartTime}</CTableDataCell>
@@ -514,8 +558,7 @@ const CourseRecords = () => {
                                                 <CButton color="danger"
                                                          style={{marginRight: 10 + 'px'}}
                                                          onClick={() => {
-                                                             setVisibleDel(!visible_Del);
-                                                             handleCourseSelection(item.courseId)
+                                                             handleCourseScheduleSelection(item.courseScheduleId)
                                                          }}>Delete</CButton>
                                             </CTableDataCell>
                                         </CTableRow>
@@ -523,14 +566,14 @@ const CourseRecords = () => {
                                 </CTableBody>
                             </CTable>
                         </CRow>
-                        <CForm>
+                        <CForm ref={formRef}>
                             <CRow className="mb-3">
                                 <CFormLabel className="col-sm-2 col-form-label">Add Schedule</CFormLabel>
                                 <CCol sm={10}>
                                     <CFormSelect
-                                        name="courseScheduleId"
-                                        value={courseScheduleId}
-                                        onChange={(event) => setCourseScheduleId(event.target.value)}
+                                        name="scheduleId"
+                                        value={scheduleId}
+                                        onChange={(event) => setScheduleId(event.target.value)}
                                     >
                                         <option value="">Select Timing</option>
                                         {schedules.map(schedule => (
@@ -541,7 +584,7 @@ const CourseRecords = () => {
                                     </CFormSelect>
                                     <CButton color="success"
                                              style={{marginTop: 10 + 'px'}}
-                                             onClick={handleSubmitSchedule}>Save</CButton>
+                                             onClick={(event) => handleSubmitSchedule(event)}>Save</CButton>
                                 </CCol>
                             </CRow>
                         </CForm>
@@ -550,9 +593,10 @@ const CourseRecords = () => {
                         <CButton color="secondary" onClick={() => setVisibleSch(false)}>
                             Close
                         </CButton>
-                        <CButton color="info" onClick={handleUpdate}>Update</CButton>
                     </CModalFooter>
                 </CModal>
+
+                {/* Modal for Updating Course */}
                 <CModal alignment="center" size="lg" visible={visible_upd} onClose={() => setVisibleUpd(false)}>
                     <CModalHeader>
                         <CModalTitle>Update a course</CModalTitle>
