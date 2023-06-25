@@ -2,6 +2,11 @@ const config = {
     // request codes
     REQUEST_SUCCESS: 1000,
 
+    // user roles
+    USER_ROLE_ADMIN: "sys:admin",
+    USER_ROLE_STUDENT: "sys:student",
+    USER_ROLE_LECTURER: "sys:lecturer",
+
     // toasts
     TOAST_SUCCESS_COLOR: "success",
     TOAST_SUCCESS_MSG: "Successful",
@@ -10,6 +15,8 @@ const config = {
 
     // urls
     basicURL: 'http://localhost:3000', // this field is probably not going to be used
+    loginUrl: '/auth/login',
+    logoutUrl: '/auth/logout', // might not use
     // faculty
     getAllFaculties: '/faculty/getAllFaculties',
     createFaculty: '/faculty/saveFaculty',
@@ -31,6 +38,8 @@ const config = {
     getEnrollCoursesByLecturerId: '/course_lecturer/getEnrollCoursesByLecturerId',
     // course
     getCourseLecturerSchedule: '/course/getCourseLecturerSchedule',
+    getAllStudentOngoingCourseList: '/course_student/getAllStudentOngoingCourseList',
+    removeStudentFromCourse: '/course_student/removeStudentFromCourse',
 };
 
 export default config;

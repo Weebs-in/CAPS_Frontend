@@ -1,56 +1,42 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilNotes,
+    cilBarChart, cilHome, cilListRich,
+    cilSchool,
 } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import {CNavItem} from '@coreui/react'
 
 const _navstudent = [
-  {
-    component: CNavTitle,
-    name: 'Course Centre',
-  },
-  {
-    component: CNavGroup,
-    name: 'Courses',
-    to: '/base',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-    items: [
-      {
+    {
         component: CNavItem,
-        name: 'Enrol Course',
-        to: '/student/enrol',
-      },
-      {
+        name: 'Home',
+        to: '/home',
+        icon: <CIcon icon={cilHome} customClassName="nav-icon"/>,
+    },
+    {
         component: CNavItem,
-        name: 'Schedule',
-        to: '/student/viewcourse',
-      },
-      {
+        name: 'Grades and GPA',
+        to: '/student/grades-gpa',
+        icon: <CIcon icon={cilBarChart} customClassName="nav-icon"/>,
+    },
+    {
         component: CNavItem,
-        name: 'My Courses',
-        to: '/student/courselist',
-      },
-    ]
-  },
-  {
-    component: CNavGroup,
-    name: 'Student Record',
-    to: '/buttons',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-    items: [
-      {
+        name: 'View Courses',
+        to: '/student/view-courses',
+        icon: <CIcon icon={cilListRich} customClassName="nav-icon"/>,
+    },
+    {
         component: CNavItem,
-        name: 'Course History',
-        to: '/student/history',
-      },
-      {
+        name: 'Enroll for a Course',
+        to: '/student/enroll-course',
+        icon: <CIcon icon={cilSchool} customClassName="nav-icon"/>,
+    },
+    {
         component: CNavItem,
-        name: 'Grades',
-        to: '/student/grades',
-      },
-    ],
-  },
+        name: 'Kick Student From Course',
+        to: '/admin/kick-student',
+        icon: <CIcon icon={cilSchool} customClassName="nav-icon"/>,
+    }
 ]
 
 export default _navstudent

@@ -15,6 +15,7 @@ import {
 } from '@coreui/react'
 import config from 'src/config.js';
 import {Link} from "react-router-dom";
+import {getJWTFromLS, getUserIdFromLS} from "../../utils/jwtUtils";
 
 const ViewCoursesTaught = () => {
     // variables
@@ -26,10 +27,10 @@ const ViewCoursesTaught = () => {
 
     const fetchCourseRecords = async () => {
         const params = new URLSearchParams();
-        // TODO: FIX THIS
-        params.append('lecturerId', 1);
+        params.append('lecturerId', getUserIdFromLS("lecturerId"));
         fetch(config.getCourseByLecturerId + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'

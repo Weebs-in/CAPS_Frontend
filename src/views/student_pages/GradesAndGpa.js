@@ -25,6 +25,7 @@ import {
 } from '@coreui/react'
 import {CChartBar, CChartPolarArea,} from '@coreui/react-chartjs'
 import config from "../../config";
+import {getJWTFromLS, getUserIdFromLS} from "../../utils/jwtUtils";
 
 const GradesAndGpa = () => {
     // variables
@@ -82,6 +83,7 @@ const GradesAndGpa = () => {
         params.append('courseId', courseId);
         await fetch(config.getCourseLecturerSchedule + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -99,10 +101,10 @@ const GradesAndGpa = () => {
 
     const fetchGradeRecords = async () => {
         const params = new URLSearchParams();
-        // TODO: FIX THIS
-        params.append('studentId', 1);
+        params.append('studentId', getUserIdFromLS("studentId"));
         await fetch(config.getAllCoursesByStudentId + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -142,6 +144,7 @@ const GradesAndGpa = () => {
         });
         await fetch(config.viewStudentCourseGradeAndGPA + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'POST'
@@ -158,6 +161,7 @@ const GradesAndGpa = () => {
         params.append('courseId', courseId);
         await fetch(config.getCourseById + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'

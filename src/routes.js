@@ -1,13 +1,17 @@
 import React from 'react'
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+// const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
+
+// Common pages
+const CommonHome = React.lazy(() => import('./views/common/CommonHome'))
 
 // Student Imports
 const ViewCourses = React.lazy(() => import('./views/student_pages/ViewCourses'))
 const EnrollForCourse = React.lazy(() => import('./views/student_pages/EnrollForCourse'))
 const GradesAndGpa = React.lazy(() => import('./views/student_pages/GradesAndGpa'))
+const KickStudentFromCourse = React.lazy(() => import('./views/student_pages/KickStudentFromCourse'))
 
 // Lecturer Imports
 const ViewCoursesTaught = React.lazy(() => import('./views/lecturer_pages/ViewCoursesTaught'))
@@ -61,14 +65,6 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
-// const WhatsNew = React.lazy(() => import('./components/home/whatsnew'))
-// const OurFaculties = React.lazy(() => import('./components/home/ourfaculties'))
-// const AllCourses = React.lazy(() => import('./components/home/allcourses'))
-//
-// const LoginAdmin = React.lazy(() => import('./components/user-admin/LoginAdmin'))
-// const LoginLecturer = React.lazy(() => import('./components/user-lecturer/LoginLecturer'))
-// const LoginStudent = React.lazy(() => import('./components/user-student/LoginStudent'))
-//
 // const CreateCourse = React.lazy(() => import('./components/user-admin/CreateCourse'))
 // const CreateLecturer = React.lazy(() => import('./components/user-admin/CreateLecturer'))
 // const CreateStudent = React.lazy(() => import('./components/user-admin/CreateStudent'))
@@ -79,12 +75,14 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
     {path: '/', exact: true, name: 'Home'},
-    {path: '/dashboard', exact: true, element: Dashboard, name: 'Dashboard'},
+    {path: '/home', exact: true, element: CommonHome, name: 'home'},
+    // {path: '/dashboard', exact: true, element: Dashboard, name: 'Dashboard'},
 
     // Student Routes
     {path: '/student/view-courses', name: 'View Course', element: ViewCourses},
     {path: '/student/enroll-course', name: 'Enroll For Course', element: EnrollForCourse},
     {path: '/student/grades-gpa', name: 'Grades And GPA', element: GradesAndGpa},
+    {path: '/admin/kick-student', name: 'Kick Student From Course', element: KickStudentFromCourse},
 
     // Lecturer Routes
     {path: '/lecturer/view-courses-taught', name: 'View Courses Taught', element: ViewCoursesTaught},
@@ -101,12 +99,6 @@ const routes = [
     // {path: '/admin/lecturerrecords', name: 'Lecturer Records', element: LectureRecords},
     // {path: '/admin/studentrecords', name: 'Student Records', element: StudentRecords},
     // {path: '/admin/courserecords', name: 'Course Records', element: CourseRecords},
-    // {path: '/login/admin', name: 'Adminstrator Login', element: LoginAdmin},
-    // {path: '/login/lecturer', name: 'Lecturer Login', element: LoginLecturer},
-    // {path: '/login/student', name: 'Student Login', element: LoginStudent},
-    // {path: '/home/whatsnew', name: 'What\'s New', element: WhatsNew},
-    // {path: '/home/ourfaculties', name: 'Our Faculties', element: OurFaculties},
-    // {path: '/home/allcourses', name: 'All Courses', element: AllCourses},
 
     {path: '/theme', name: 'Theme', element: Colors, exact: true},
     {path: '/theme/colors', name: 'Colors', element: Colors},

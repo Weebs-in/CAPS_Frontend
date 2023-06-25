@@ -25,6 +25,7 @@ import {
 } from '@coreui/react'
 import {CChartBar, CChartPie, CChartPolarArea} from '@coreui/react-chartjs'
 import config from "../../config";
+import {getJWTFromLS, getUserIdFromLS} from "../../utils/jwtUtils";
 
 const ViewStudentPerformance = () => {
     // variables
@@ -83,6 +84,7 @@ const ViewStudentPerformance = () => {
         params.append('courseId', courseId);
         await fetch(config.getCourseLecturerSchedule + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -152,10 +154,10 @@ const ViewStudentPerformance = () => {
 
     const fetchStudentPerformance = async () => {
         const params = new URLSearchParams();
-        // TODO: FIX THIS
-        params.append('lecturerId', 1);
+        params.append('lecturerId', getUserIdFromLS("lecturerId"));
         await fetch(config.getStudentPerformance + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -199,6 +201,7 @@ const ViewStudentPerformance = () => {
         params.append('courseId', courseId);
         await fetch(config.getCourseById + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'

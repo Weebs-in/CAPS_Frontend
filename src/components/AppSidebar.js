@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux'
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler, CNavItem } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 
 import { AppSidebarNav } from './AppSidebarNav'
-
-import { logo } from 'src/assets/brand/logo'
-import { logoNegative } from 'src/assets/brand/logo-negative'
-import { sygnet } from 'src/assets/brand/sygnet'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
@@ -22,6 +17,7 @@ import navHome from '../_navhome'
 import navAdmin from '../_navadmin'
 import navLect from '../_navlecturer'
 import navStu from '../_navstudent'
+import config from "../config";
 
 const AppSidebar = ({ userType }) => {
   const dispatch = useDispatch()
@@ -44,11 +40,11 @@ const AppSidebar = ({ userType }) => {
         <SimpleBar>
           {!userType ? (
               <AppSidebarNav items={navigation} />
-          ) : userType === 'admin' ? (
+          ) : userType === config.USER_ROLE_ADMIN ? (
               <AppSidebarNav items={navAdmin} />
-          ) : userType === 'lecturer' ? (
+          ) : userType === config.USER_ROLE_LECTURER ? (
               <AppSidebarNav items={navLect} />
-          ) : userType === 'student' ? (
+          ) : userType === config.USER_ROLE_STUDENT ? (
               <AppSidebarNav items={navStu} />
           ) : null}
         </SimpleBar>

@@ -15,6 +15,7 @@ import {
     CTableRow, CToast, CToastBody, CToaster, CToastHeader,
 } from '@coreui/react'
 import config from 'src/config.js';
+import {getJWTFromLS, getUserIdFromLS} from "../../utils/jwtUtils";
 
 const EnrollForCourse = () => {
     // variables
@@ -34,10 +35,10 @@ const EnrollForCourse = () => {
 
     const fetchCourses = async () => {
         const params = new URLSearchParams();
-        // TODO: FIX THIS
-        params.append('studentId', 1);
+        params.append('studentId', getUserIdFromLS("studentId"));
         await fetch(config.getAllCoursesStudentCanEnroll + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'POST'
@@ -102,9 +103,12 @@ const EnrollForCourse = () => {
         try {
             const params = new URLSearchParams();
             params.append('courseId', selectedCourseId);
-            // TODO: FIX THIS
-            params.append('studentId', 1);
+            params.append('studentId', getUserIdFromLS("studentId"));
             const response = await fetch(config.studentEnrollCourse + `?${params.toString()}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + getJWTFromLS(),
+                    'Content-Type': 'application/json'
+                },
                 method: 'POST'
             });
             if (response.ok) {

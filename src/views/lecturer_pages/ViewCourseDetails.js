@@ -17,6 +17,7 @@ import {
 } from '@coreui/react'
 import config from 'src/config.js';
 import {useLocation} from "react-router-dom";
+import {getJWTFromLS, getUserIdFromLS} from "../../utils/jwtUtils";
 
 const ViewCoursesDetails = () => {
     // variables
@@ -51,6 +52,7 @@ const ViewCoursesDetails = () => {
         params.append('courseId', courseId);
         await fetch(config.getCourseById + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -104,6 +106,7 @@ const ViewCoursesDetails = () => {
         params.append('courseId', courseId);
         fetch(config.getStudentsByCourseId + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -141,6 +144,7 @@ const ViewCoursesDetails = () => {
         params.append('courseId', courseId);
         await fetch(config.getCourseLecturerSchedule + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -195,12 +199,15 @@ const ViewCoursesDetails = () => {
         try {
             const params = new URLSearchParams();
             params.append('courseId', selectedCourseId);
-            // TODO: FIX THIS
-            params.append('lecturerId', 1);
+            params.append('lecturerId', getUserIdFromLS("lecturerId"));
             params.append('studentId', selectedStudentId);
             params.append('courseStudentGrade', selectedStudentGrade);
             params.append('courseStudentStatus', passed);
             const response = await fetch(config.gradeStudentForCourse + `?${params.toString()}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + getJWTFromLS(),
+                    'Content-Type': 'application/json'
+                },
                 method: 'POST'
             });
             if (response.ok) {

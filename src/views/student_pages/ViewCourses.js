@@ -15,6 +15,7 @@ import {
     CTableRow,
 } from '@coreui/react'
 import config from 'src/config.js';
+import {getJWTFromLS, getUserIdFromLS} from "../../utils/jwtUtils";
 
 const ViewCourses = () => {
     // variables
@@ -32,10 +33,10 @@ const ViewCourses = () => {
 
     const fetchCourseRecords = async () => {
         const params = new URLSearchParams();
-        // TODO: FIX THIS
-        params.append('studentId', 1);
+        params.append('studentId', getUserIdFromLS("studentId"));
         fetch(config.getAllCoursesByStudentId + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -80,6 +81,7 @@ const ViewCourses = () => {
         params.append('courseId', courseId);
         await fetch(config.getCourseById + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
@@ -110,6 +112,7 @@ const ViewCourses = () => {
         params.append('courseId', courseId);
         await fetch(config.getCourseLecturerSchedule + `?${params.toString()}`, {
             headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
                 'Content-Type': 'application/json'
             },
             method: 'GET'
