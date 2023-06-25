@@ -28,6 +28,7 @@ const config = {
     gradeStudentForCourse: '/course_lecturer/gradeStudentForCourse',
     getStudentPerformance: '/lecturer/getStudentPerformanceByLecturerId',
     lecturerEnrollCourse: '/course_lecturer/lecturerEnrollCourse',
+    getEnrollCoursesByLecturerId: '/course_lecturer/getEnrollCoursesByLecturerId',
     // course
     getCourseLecturerSchedule: '/course/getCourseLecturerSchedule',
 };
