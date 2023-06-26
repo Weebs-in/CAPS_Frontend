@@ -15,6 +15,7 @@ const DefaultLayout = () => {
         await setUserType(getUserRoleFromLS())
     };
 
+
     return (
     <div>
       <AppSidebar userType={userType}/>

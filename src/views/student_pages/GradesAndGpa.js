@@ -219,8 +219,8 @@ const GradesAndGpa = () => {
         <CRow>
             <CCol xs={12}>
                 <CCallout color="info">Your current GPA is <CBadge color="success">{gpa} / 5.0</CBadge>.
-                    Shall you have any questions, please contact your advisor.</CCallout>
-                <CCallout color="warning">This page only contains courses completed with grades. In progress courses not
+                    If you have any questions, please contact your advisor.</CCallout>
+                <CCallout color="warning">This page only contains courses completed with grades. Courses in progress are not
                     included.</CCallout>
             </CCol>
             <CCol xs={12}>

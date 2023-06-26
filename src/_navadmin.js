@@ -1,17 +1,8 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDescription,
-  cilDrop, cilHome,
-  cilNotes,
+  cilHome,
   cilPencil,
-  cilPuzzle, cilSchool,
-  cilSpeedometer,
-  cilStar,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -36,11 +27,6 @@ const _navadmin = [
         component: CNavItem,
         name: 'Course Records',
         to: '/admin/course-records',
-      },
-      {
-        component: CNavItem,
-        name: 'Enrolment',
-        to: '/admin/course-enrolment',
       },
       {
         component: CNavItem,

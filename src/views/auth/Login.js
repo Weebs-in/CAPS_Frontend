@@ -83,6 +83,7 @@ const Login = () => {
                     await processJwt(jwt);
                     // redirect to home page
                     window.location.href = "/#/home";
+                    window.location.reload();
                 }
                 // else, login failed because bad credentials
                 else {
@@ -129,12 +130,12 @@ const Login = () => {
     )
 
     return (
-        <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+        <div className="bg-light min-vh-70 d-flex flex-row align-items-center">
             <CContainer>
                 <CRow className="justify-content-center">
                     <CCol md={6}>
                         <CCardGroup>
-                            <CCard className="p-4" style={{width: '30%'}}>
+                            <CCard className="p-4" style={{ minWidth: '280px', maxWidth: '400px' }}>
                                 <CCardBody>
                                     <CForm>
                                         <h1>CAPS Login</h1>
@@ -174,11 +175,11 @@ const Login = () => {
                                                     Login
                                                 </CButton>
                                             </CCol>
-                                            <CCol xs={6} className="text-right">
-                                                <CButton color="link" className="px-0; text-right">
-                                                    Forgot password?
-                                                </CButton>
-                                            </CCol>
+                                            {/*<CCol xs={6} className="text-right">*/}
+                                            {/*    <CButton color="link" className="px-0; text-right">*/}
+                                            {/*        Forgot password?*/}
+                                            {/*    </CButton>*/}
+                                            {/*</CCol>*/}
                                         </CRow>
                                     </CForm>
                                 </CCardBody>

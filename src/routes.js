@@ -67,10 +67,8 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const WhatsNew = React.lazy(() => import('./components/home/whatsnew'))
 
-const Login = React.lazy(() => import('./components/home/Login'))
-const LoginAdmin = React.lazy(() => import('./components/user-admin/LoginAdmin'))
-const LoginLecturer = React.lazy(() => import('./components/user-lecturer/LoginLecturer'))
-const LoginStudent = React.lazy(() => import('./components/user-student/LoginStudent'))
+const Login = React.lazy(() => import('./views/auth/Login'))
+const Logout = React.lazy(() => import('./views/auth/Logout'))
 
 const CourseEnrolment = React.lazy(() => import('./components/user-admin/CourseEnrolment'))
 const CourseRecords = React.lazy(() => import('./components/user-admin/CourseRecords'))
@@ -126,9 +124,7 @@ const routes = [
   { path: '/student/view-course', name: 'Schedule', element: ScheduleStu},
   { path: '/student/grades', name: 'Grades', element: StudentGrades},
   { path: '/login/', exact:true, name: 'Log In', element: Login },
-  { path: '/login/admin', name: 'Administrator Login', element: LoginAdmin},
-  { path: '/login/lecturer', name: 'Lecturer Login', element: LoginLecturer},
-  { path: '/login/student', name: 'Student Login', element: LoginStudent},
+  { path: '/logout/', exact:true, name: 'Log Out', element: Logout },
   { path: '/home/whats-new', name: 'What\'s New', element: WhatsNew},
 
     {path: '/theme', name: 'Theme', element: Colors, exact: true},

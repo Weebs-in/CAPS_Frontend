@@ -29,7 +29,7 @@ const _navlecturer = [
     },
     {
         component: CNavItem,
-        name: 'Lecturer Enroll Course',
+        name: 'Course Selection',
         to: '/lecturer/lecturer-enroll-course',
         icon: <CIcon icon={cilSchool} customClassName="nav-icon"/>,
     },

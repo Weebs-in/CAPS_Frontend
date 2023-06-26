@@ -39,7 +39,7 @@ const AppSidebar = ({ userType }) => {
       <CSidebarNav>
         <SimpleBar>
           {!userType ? (
-              <AppSidebarNav items={navigation} />
+              <AppSidebarNav items={navHome} />
           ) : userType === config.USER_ROLE_ADMIN ? (
               <AppSidebarNav items={navAdmin} />
           ) : userType === config.USER_ROLE_LECTURER ? (

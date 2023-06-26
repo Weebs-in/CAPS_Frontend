@@ -47,16 +47,16 @@ const LecturerEnrollForCourse = () => {
             console.log(coursesData);
             coursesData.map(item => {
                 if (item.courseEnrollmentStatus === 0) {
-                    item.courseEnrollmentStatus = "Enrolling";
+                    item.courseEnrollmentStatus = "Open";
                     item.enrollmentBadgeColor = "info";
                 } else if (item.courseEnrollmentStatus === -1) {
-                    item.courseEnrollmentStatus = "Not Enrolling";
+                    item.courseEnrollmentStatus = "Not Open";
                     item.enrollmentBadgeColor = "danger";
                 } else {
                     item.enrollmentBadgeColor = "primary";
                 }
                 if (item.courseStatus === 0) {
-                    item.courseStatus = "Enrolling";
+                    item.courseStatus = "Open";
                     item.statusBadgeColor = "info";
                 } else if (item.courseStatus === 1) {
                     item.courseStatus = "Teaching in progress";
@@ -152,11 +152,11 @@ const LecturerEnrollForCourse = () => {
             <CCol xs={12}>
                 <CCard className="mb-4">
                     <CCardHeader>
-                        <h3 style={{marginTop: 10 + 'px'}}>Enroll To Teach A Course</h3>
+                        <h3 style={{marginTop: 10 + 'px'}}>Registration to Teach Courses</h3>
                     </CCardHeader>
                     <CCardBody>
                         <p className="text-medium-emphasis small">
-                            Select and enroll a course below to begin teaching.
+                            Select and join a course below to begin teaching.
                         </p>
                         <CTable hover>
                             <CTableHead>
@@ -167,7 +167,7 @@ const LecturerEnrollForCourse = () => {
                                     <CTableHeaderCell scope="col">Course Capacity</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Course Vacancy</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Course Credits</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Course EnrollmentStatus</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Course Availability</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Course Status</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Options</CTableHeaderCell>
                                 </CTableRow>
@@ -190,7 +190,7 @@ const LecturerEnrollForCourse = () => {
                                                      style={{marginRight: 10 + 'px'}}
                                                      onClick={() => {
                                                          handleEnrollDetails(item.courseId)
-                                                     }}>Enroll</CButton>
+                                                     }}>Register</CButton>
                                         </CTableDataCell>
                                     </CTableRow>
                                 ))}
@@ -200,7 +200,7 @@ const LecturerEnrollForCourse = () => {
                 </CCard>
                 <CModal alignment="center" size="lg" visible={visible_Enroll} onClose={() => setVisibleEnroll(false)}>
                     <CModalHeader>
-                        <CModalTitle>Enroll for a course</CModalTitle>
+                        <CModalTitle>Register to teach a course</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
                         <CAlert color="info">

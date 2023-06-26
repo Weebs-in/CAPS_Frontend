@@ -157,7 +157,7 @@ const EnrollForCourse = () => {
                     </CCardHeader>
                     <CCardBody>
                         <p className="text-medium-emphasis small">
-                            Select and enroll a course below.
+                            Select and enroll in a course below.
                         </p>
                         <CTable hover>
                             <CTableHead>

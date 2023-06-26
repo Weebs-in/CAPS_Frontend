@@ -309,7 +309,7 @@ const StudentRecords = () => {
                                     <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">First Mid Name</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Birthdate</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Birthdate<br/>YYYY/MM/DD</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Faculty</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">GPA</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Enrolment Date</CTableHeaderCell>

@@ -1,18 +1,33 @@
 import React from 'react'
+import { useEffect } from 'react';
 import {
     CButton, CCol,
     CContainer,
     CRow,
 } from '@coreui/react'
 
-const Logout = () => {
 
+const Logout = () => {
     const handleBackLogin = () => {
         window.location.href = "/#/login";
-    }
 
+    }
+    if (localStorage.getItem('isLoggedIn') !== null) {
+        useEffect(() => {
+            // Clear local storage items on component mount
+            localStorage.removeItem('jwt');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('adminId');
+            localStorage.removeItem('studentId');
+            localStorage.removeItem('lecturerId');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userNbr');
+
+            window.location.reload();
+        }, []);
+    }
     return (
-        <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+        <div className="bg-light d-flex justify-content-center align-items-center">
             <CContainer>
                 <CRow className="justify-content-center">
                     <CCol md={6}>

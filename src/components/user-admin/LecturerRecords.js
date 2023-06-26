@@ -9,7 +9,6 @@ import {
     CCardBody,
     CCardHeader,
     CCol, CForm, CFormInput, CFormLabel, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle,
-    CInputGroup, CInputGroupText,
     CRow,
     CFormSelect,
     CTable,
@@ -307,7 +306,7 @@ const LecturerRecords = () => {
                                     <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Birthdate</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Birthdate<br/>YYYY/MM/DD</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Faculty</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Options</CTableHeaderCell>
                                 </CTableRow>

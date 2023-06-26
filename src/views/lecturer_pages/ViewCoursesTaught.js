@@ -75,7 +75,7 @@ const ViewCoursesTaught = () => {
                     </CCardHeader>
                     <CCardBody>
                         <p className="text-medium-emphasis small">
-                            All courses you teach.
+                            All courses you are currently teaching:
                         </p>
                         <CTable hover>
                             <CTableHead>
