@@ -16,10 +16,12 @@ import {
 } from '@coreui/react'
 import config from 'src/config.js';
 import {getJWTFromLS} from "../../utils/jwtUtils";
-
+import '../../css/page.css'
 const CourseEnrolment = () => {
     // variables
     const [courses, setCourses] = useState([]);
+    // ! 当前分页课程数据
+    const [currentCourses, setCourrentCourses] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
     const [name, setName] = useState('');
     // modal visibility
@@ -35,7 +37,31 @@ const CourseEnrolment = () => {
     useEffect(() => {
         fetchCourses();
     }, []);
+    const [itemsPerPage, setItemsPerPage] = useState(10); // 每页显示的数据量
+    const [totalPages,setTotalPages]=useState(0);
+    const renderPageButtons = () => {
+        // 生成页码按钮
+        const buttons = [];
+        for (let i = 1; i <= totalPages; i++) {
+            buttons.push(
+                <button key={i} onClick={() => handlePageChange(i)} className="page_button">
+                    {i}
+                </button>
+            );
+        }
 
+        return buttons;
+    };
+    const handlePageChange = (pageNumber) => {
+        handlePagination(courses,pageNumber); // 重新处理分页展示
+    };
+    const handlePagination = (courses,currentPage) => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentPageCourses = courses.slice(startIndex, endIndex);
+        // !
+        setCourrentCourses(currentPageCourses);
+    };
     const fetchCourses = async () => {
         fetch(config.getAllCourses, {
             headers: {
@@ -43,9 +69,13 @@ const CourseEnrolment = () => {
                 'Content-Type': 'application/json'
             },
             method: 'GET'
-        }).then(response => response.json()).then(data => {
+        }).then(response => response.json())
+            .then(data => {
             const coursesData = data.data;
             setCourses(coursesData);
+            handlePagination(coursesData,1);
+
+            setTotalPages(Math.ceil( coursesData.length / itemsPerPage));
         }).catch(error => {
             console.error('Error fetching course data:', error);
         });
@@ -231,7 +261,7 @@ const CourseEnrolment = () => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {courses.map(item => (
+                                {currentCourses.map(item => (
                                     <CTableRow key={item.courseId}>
                                         <CTableHeaderCell scope="row">{item.courseId}</CTableHeaderCell>
                                         <CTableDataCell>{item.courseName}</CTableDataCell>
@@ -253,6 +283,10 @@ const CourseEnrolment = () => {
                                 ))}
                             </CTableBody>
                         </CTable>
+                        <div className="btns-wrapper">
+                            {renderPageButtons()}
+
+                        </div>
                     </CCardBody>
                 </CCard>
                 <CModal alignment="center" size="lg" visible={visible} onClose={() => setVisible(false)}>
