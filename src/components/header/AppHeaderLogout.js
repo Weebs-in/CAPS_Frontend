@@ -19,7 +19,7 @@ import CIcon from '@coreui/icons-react'
 
 const AppHeaderLogout = () => {
     return (
-        <CButton color="secondary" size="lg" to="/login/" component={NavLink}>
+        <CButton color="secondary" size="lg" to="/logout" component={NavLink}>
             <CIcon icon={cilUser} className="me-2" />Log Out
         </CButton>
     )

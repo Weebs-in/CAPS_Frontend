@@ -22,27 +22,9 @@ const _navhome = [
         name: 'Navigation',
     },
     {
-        component: CNavGroup,
-        name: 'About',
-        to: '/base',
-        icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
-        items: [
-            {
-                component: CNavItem,
-                name: 'What\'s New',
-                to: '/home/whats-new',
-            },
-            {
-                component: CNavItem,
-                name: 'Our Faculties',
-                to: '/home/our-faculties',
-            },
-        ]
-    },
-    {
         component: CNavItem,
-        name: 'All Courses',
-        to: '/home/all-courses',
+        name: 'What\'s New',
+        to: '/home/whats-new',
         icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
     },
 ]

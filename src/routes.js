@@ -66,8 +66,6 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const WhatsNew = React.lazy(() => import('./components/home/whatsnew'))
-const OurFaculties = React.lazy(() => import('./components/home/ourfaculties'))
-const AllCourses = React.lazy(() => import('./components/home/allcourses'))
 
 const Login = React.lazy(() => import('./components/home/Login'))
 const LoginAdmin = React.lazy(() => import('./components/user-admin/LoginAdmin'))
@@ -92,7 +90,7 @@ const StudentGrades = React.lazy(() => import('./components/user-student/Student
 
 const routes = [
     {path: '/', exact: true, name: 'Home'},
-    {path: '/home', exact: true, element: CommonHome, name: 'home'},
+    {path: '/home', exact: true, element: CommonHome, name: 'Home'},
     // {path: '/dashboard', exact: true, element: Dashboard, name: 'Dashboard'},
 
     // Student Routes
@@ -109,13 +107,6 @@ const routes = [
 
     // example, can remove
     {path: '/forms', name: 'Forms', element: FormControl, exact: true},
-    // {path: '/admin/addcourse', name: 'Add Course', element: CreateCourse},
-    // {path: '/admin/addlecturer', name: 'Add Lecturer', element: CreateLecturer},
-    // {path: '/admin/addstudent', name: 'Add Student', element: CreateStudent},
-    // {path: '/admin/courseenrolment', name: 'Course Enrolment', element: CourseEnrolment},
-    // {path: '/admin/lecturerrecords', name: 'Lecturer Records', element: LectureRecords},
-    // {path: '/admin/studentrecords', name: 'Student Records', element: StudentRecords},
-    // {path: '/admin/courserecords', name: 'Course Records', element: CourseRecords},
   { path: '/', exact: true, name: 'Home' },
   // { path: '/dashboard', exact:true, element: Dashboard, name: 'Dashboard'},
   // example, can remove
@@ -139,8 +130,6 @@ const routes = [
   { path: '/login/lecturer', name: 'Lecturer Login', element: LoginLecturer},
   { path: '/login/student', name: 'Student Login', element: LoginStudent},
   { path: '/home/whats-new', name: 'What\'s New', element: WhatsNew},
-  { path: '/home/our-faculties', name: 'Our Faculties', element: OurFaculties},
-  { path: '/home/all-courses', name: 'All Courses', element: AllCourses},
 
     {path: '/theme', name: 'Theme', element: Colors, exact: true},
     {path: '/theme/colors', name: 'Colors', element: Colors},
