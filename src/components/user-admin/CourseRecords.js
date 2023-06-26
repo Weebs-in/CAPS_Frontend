@@ -16,11 +16,15 @@ import {
 } from '@coreui/react'
 import config from 'src/config.js';
 import {getJWTFromLS} from "../../utils/jwtUtils";
-
+import '../../css/page.css'
 const CourseRecords = () => {
     // variables
     const [faculties, setFaculties] = useState([]);
+    //const [courses, setCourses] = useState([]);
+    // ! 所有课程数据
     const [courses, setCourses] = useState([]);
+    // ! 当前分页课程数据
+    const [currentCourses, setCourrentCourses] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
     const [code, setCode] = useState('');
     const [name, setName] = useState('');
@@ -43,7 +47,7 @@ const CourseRecords = () => {
         fetchCourses();
     }, []);
 
-    const fetchCourses = async () => {
+/*    const fetchCourses = async () => {
         fetch(config.getAllCourses, {
             headers: {
                 'Authorization': 'Bearer ' + getJWTFromLS(),
@@ -56,6 +60,64 @@ const CourseRecords = () => {
         }).catch(error => {
             console.error('Error fetching course data:', error);
         });
+    };*/
+  //  const [currentPage, setCurrentPage] = useState(1); // 当前页码
+    const [itemsPerPage, setItemsPerPage] = useState(10); // 每页显示的数据量
+    const [totalPages,setTotalPages]=useState(0);
+
+    const renderPageButtons = () => {
+        // 计算总页数
+        //const totalPages = Math.ceil(coursesData.length / itemsPerPage);
+
+        // 生成页码按钮
+        const buttons = [];
+        for (let i = 1; i <= totalPages; i++) {
+            buttons.push(
+                <button key={i} onClick={() => handlePageChange(i)} className="page_button">
+                    {i}
+                </button>
+            );
+        }
+
+        return buttons;
+    };
+
+    const handlePageChange = (pageNumber) => {
+        //setCurrentPage(pageNumber);
+        //console.log(pageNumber);
+        handlePagination(courses,pageNumber); // 重新处理分页展示
+    };
+    const handlePagination = (courses,currentPage) => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentPageCourses = courses.slice(startIndex, endIndex);
+        // !
+        setCourrentCourses(currentPageCourses);
+       // setCourses(currentPageCourses);
+    };
+
+
+// 在获取课程数据后调用 handlePagination 方法进行分页展示
+    const fetchCourses = async () => {
+        fetch(config.getAllCourses, {
+            headers: {
+                'Authorization': 'Bearer ' + getJWTFromLS(),
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                const coursesData = data.data;
+                // !
+                setCourses(coursesData);
+                handlePagination(coursesData,1);
+
+                setTotalPages(Math.ceil( coursesData.length / itemsPerPage));
+            })
+            .catch(error => {
+                console.error('Error fetching course data:', error);
+            });
     };
 
     useEffect(() => {
@@ -147,7 +209,11 @@ const CourseRecords = () => {
     const handleCourseSelection = (courseId) => {
         console.log("selected id: " + courseId)
         setSelectedCourseId(courseId);
-        const selectedCourse = courses.find((course) => course.courseId === courseId);
+        // !
+        const selectedCourse = currentCourses.find(
+            (course) => course.courseId === courseId
+        );
+        //const selectedCourse = courses.find((course) => course.courseId === courseId);
         setCode(selectedCourse.courseCode);
         setName(selectedCourse.courseName);
         setCredits(selectedCourse.courseCredits);
@@ -296,7 +362,7 @@ const CourseRecords = () => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {courses.map(item => (
+                                {currentCourses.map(item => (
                                     <CTableRow key={item.courseId}>
                                         <CTableHeaderCell scope="row">{item.courseId}</CTableHeaderCell>
                                         <CTableDataCell>{item.courseCode}</CTableDataCell>
@@ -323,6 +389,13 @@ const CourseRecords = () => {
                                 ))}
                             </CTableBody>
                         </CTable>
+
+                            <div className="btns-wrapper">
+                                {renderPageButtons()}
+
+                            </div>
+
+
                     </CCardBody>
                 </CCard>
                 <CModal alignment="center" size="lg" visible={visible} onClose={() => setVisible(false)}>
@@ -475,6 +548,7 @@ const CourseRecords = () => {
                                 </CCol>
                             </CRow>
                         </CForm>
+
                     </CModalBody>
                     <CModalFooter>
                         <CButton color="secondary" onClick={() => setVisibleDel(false)}>
@@ -486,7 +560,9 @@ const CourseRecords = () => {
                 <CToaster ref={toaster} push={toast} placement="top-end"/>
             </CCol>
         </CRow>
+
     )
+
 }
 
 export default CourseRecords
