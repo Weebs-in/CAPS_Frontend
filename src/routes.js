@@ -75,16 +75,6 @@ const CourseRecords = React.lazy(() => import('./components/user-admin/CourseRec
 const LectureRecords = React.lazy(() => import('./components/user-admin/LecturerRecords'))
 const StudentRecords = React.lazy(() => import('./components/user-admin/StudentRecords'))
 const FacultyRecords = React.lazy(() => import('./components/user-admin/FacultyRecords'))
-const GradeCourse = React.lazy(() => import('./components/user-lecturer/GradeCourse'))
-const StudentPerformance = React.lazy(() => import('./components/user-lecturer/StudentPerformance'))
-const ViewMyCourses = React.lazy(() => import('./components/user-lecturer/ViewCourses'))
-const ViewEnrolment = React.lazy(() => import('./components/user-lecturer/ViewEnrolment'))
-
-const CourseHistory = React.lazy(() => import('./components/user-student/CourseHistory'))
-const CourseList = React.lazy(() => import('./components/user-student/CourseList'))
-const EnrolCourse = React.lazy(() => import('./components/user-student/EnrolCourse'))
-const ScheduleStu = React.lazy(() => import('./components/user-student/ScheduleStu'))
-const StudentGrades = React.lazy(() => import('./components/user-student/StudentGrades'))
 
 const routes = [
     {path: '/', exact: true, name: 'Home'},
@@ -114,15 +104,6 @@ const routes = [
   { path: '/admin/student-records', name: 'Student Records', element: StudentRecords},
   { path: '/admin/course-records', name: 'Course Records', element: CourseRecords},
   { path: '/admin/faculty-records', name: 'Faculty Records', element: FacultyRecords},
-  { path: '/lecturer/grade-course', name: 'Grade Course', element: GradeCourse},
-  { path: '/lecturer/student', name: 'Student Performance', element: StudentPerformance},
-  { path: '/lecturer/courses', name: 'View My Courses', element: ViewMyCourses},
-  { path: '/lecturer/enrolment', name: 'View Enrolment', element: ViewEnrolment},
-  { path: '/student/enrol', name: 'Enrol Course', element: EnrolCourse},
-  { path: '/student/course-list', name: 'My Courses', element: CourseList},
-  { path: '/student/history', name: 'Course History', element: CourseHistory},
-  { path: '/student/view-course', name: 'Schedule', element: ScheduleStu},
-  { path: '/student/grades', name: 'Grades', element: StudentGrades},
   { path: '/login/', exact:true, name: 'Log In', element: Login },
   { path: '/logout/', exact:true, name: 'Log Out', element: Logout },
   { path: '/home/whats-new', name: 'What\'s New', element: WhatsNew},
