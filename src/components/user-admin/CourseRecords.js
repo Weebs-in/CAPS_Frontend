@@ -152,6 +152,7 @@ const CourseRecords = () => {
         setName(selectedCourse.courseName);
         setCredits(selectedCourse.courseCredits);
         setCapacity(selectedCourse.courseCapacity);
+        setVacancy(selectedCourse.courseVacancy);
         setCourseFacultyId(selectedCourse.faculty.facultyId);
     };
 

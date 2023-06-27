@@ -47,16 +47,16 @@ const LecturerEnrollForCourse = () => {
             console.log(coursesData);
             coursesData.map(item => {
                 if (item.courseEnrollmentStatus === 0) {
-                    item.courseEnrollmentStatus = "Open";
+                    item.courseEnrollmentStatus = "Enrolling";
                     item.enrollmentBadgeColor = "info";
                 } else if (item.courseEnrollmentStatus === -1) {
-                    item.courseEnrollmentStatus = "Not Open";
+                    item.courseEnrollmentStatus = "Not Enrolling";
                     item.enrollmentBadgeColor = "danger";
                 } else {
                     item.enrollmentBadgeColor = "primary";
                 }
                 if (item.courseStatus === 0) {
-                    item.courseStatus = "Open";
+                    item.courseStatus = "Enrolling";
                     item.statusBadgeColor = "info";
                 } else if (item.courseStatus === 1) {
                     item.courseStatus = "Teaching in progress";

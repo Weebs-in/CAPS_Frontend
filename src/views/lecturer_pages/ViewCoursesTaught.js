@@ -71,7 +71,7 @@ const ViewCoursesTaught = () => {
             <CCol xs={12}>
                 <CCard className="mb-4">
                     <CCardHeader>
-                        <h3 style={{marginTop: 10 + 'px'}}>List of Course Taught</h3>
+                        <h3 style={{marginTop: 10 + 'px'}}>List of Courses Taught</h3>
                     </CCardHeader>
                     <CCardBody>
                         <p className="text-medium-emphasis small">
